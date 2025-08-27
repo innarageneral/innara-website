@@ -92,7 +92,7 @@ export default function Home() {
       <section className="relative overflow-hidden mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-16 sm:py-20 bg-[var(--innara-surface)]">
         <div className="text-center max-w-3xl mx-auto">
           <p
-            className="inline-block text-xs tracking-wide uppercase text-[var(--innara-primary)] bg-[var(--innara-surface)] rounded-full px-3 py-1 mb-5 animate-fade-up"
+            className="inline-block text-xs tracking-wide uppercase text-[var(--innara-primary)] bg-[var(--innara-surface)] rounded-full px-3 py-1 mb-5 animate-fade-up border border-[var(--innara-primary)]"
             style={{ animationDelay: "80ms" }}
           >
             New: Hormone-Smart Meal Planning App
@@ -119,13 +119,15 @@ export default function Home() {
               href="#download"
               className="inline-flex items-center justify-center rounded-2xl bg-[var(--innara-primary)] px-5 py-3 text-sm font-semibold text-white shadow-sm transition-transform hover:-translate-y-0.5 hover:brightness-90"
             >
-              Download the App
+              Download the App 
+              <span className="ml-2">➜</span>
         </a>
         <a
               href="#how"
               className="inline-flex items-center justify-center rounded-2xl border border-[var(--innara-primary)] px-5 py-3 text-sm font-semibold text-[var(--innara-primary)] transition-colors hover:bg-[var(--innara-surface)]"
             >
               See How It Works
+              <span className="ml-2">➜</span>
             </a>
           </div>
         </div>
@@ -206,6 +208,7 @@ export default function Home() {
                 className="inline-flex items-center justify-center rounded-2xl border border-[var(--innara-primary)] px-5 py-3 text-sm font-semibold text-[var(--innara-primary)] transition-colors hover:bg-[var(--innara-surface)]"
               >
                 Learn More about Innara
+                <span className="ml-2">➜</span>
               </a>
             </div>
           </motion.div>
