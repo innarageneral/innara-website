@@ -560,7 +560,7 @@ export default function Home() {
               <input type="email" className="mt-1 w-full rounded-xl border border-slate-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[color:var(--innara-primary)]/30" placeholder="you@example.com" />
             </div>
             <div>
-              <label className="text-sm font-medium text-slate-700">I'm interested in</label>
+              <label className="text-sm font-medium text-slate-700">I&apos;m interested in</label>
               <select className="mt-1 w-full rounded-xl border border-slate-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[color:var(--innara-primary)]/30">
                 <option>Meal Planning</option>
                 <option>Nutrition Guides</option>
