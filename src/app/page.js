@@ -1,6 +1,7 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
 import { useState } from "react";
 
 const fadeIn = {
@@ -57,9 +58,9 @@ export default function Home() {
               </a>
               <a
                 className="hover:text-[var(--innara-primary)] link-underline"
-                href="#pricing"
+                href="#plans"
               >
-                Pricing
+                Plans
               </a>
               <a className="hover:text-[var(--innara-primary)] link-underline" href="#blog">
                 Blog
@@ -132,21 +133,33 @@ export default function Home() {
 
       {/* Stats / Metrics */}
       <section className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-16 sm:py-20 bg-white">
-        <div className="h-px w-full bg-purple-200/70 mb-12" />
+        <div className="h-0.5 w-full bg-[var(--innara-primary)]/50 mb-12" />
         <div className="grid sm:grid-cols-3 gap-10 text-center">
           {[
-            { title: "Free", subtitle: "7 day trial" },
-            { title: "24 hr", subtitle: "Set up Support" },
-            { title: "2x", subtitle: "Energy Increase" },
+            { title: "Free", subtitle: "7 day trial", icon: "/icons/gift.png" },
+            { title: "24 hr", subtitle: "Set up Support", icon: "/icons/clock.png" },
+            { title: "2x", subtitle: "Energy Increase", icon: "/icons/lightning.png" },
           ].map((item) => (
             <div key={item.title} className="flex flex-col items-center">
-              <div className="h-24 w-24 sm:h-28 sm:w-28 rounded-full bg-purple-100/70" />
-              <div className="mt-6 text-xl sm:text-3xl font-bold text-slate-900">{item.title}</div>
+              <div className="relative h-24 w-24 sm:h-28 sm:w-28 rounded-full bg-[var(--innara-surface)] grid place-content-center">
+                <Image
+                  src={item.icon}
+                  alt={item.title}
+                  width={40}
+                  height={40}
+                  className="object-contain"
+                />
+              </div>
+              <div className="mt-6 text-xl sm:text-3xl font-bold text-slate-900">
+                {item.title}
+              </div>
               <div className="mt-2 text-base text-slate-700">{item.subtitle}</div>
             </div>
           ))}
         </div>
+        <div className="h-0.5 w-full bg-[var(--innara-primary)]/50 mt-12" />
       </section>
+
 
 
       {/* About */}
@@ -197,10 +210,14 @@ export default function Home() {
             </div>
           </motion.div>
           <div className="flex justify-center">
-            <div className="relative w-64 sm:w-72 md:w-80 aspect-[9/19] rounded-[2.5rem] border-8 border-slate-900/90 bg-slate-100 shadow-xl overflow-hidden">
-              <div className="h-full w-full bg-gradient-to-b from-[var(--innara-surface)] via-white to-[var(--innara-surface)] flex items-center justify-center text-sm text-[var(--innara-primary)]">
-                App Screen
-              </div>
+            <div className="relative w-64 sm:w-72 md:w-80 aspect-[9/19] min-h-[500px] rounded-[2.5rem] border-8 border-slate-900/90 bg-slate-100 shadow-xl overflow-hidden">
+              <Image
+                src="/app-mock.png"
+                alt="Innara app screen"
+                fill
+                className="object-cover"
+                priority
+              />
             </div>
           </div>
         </div>
@@ -292,26 +309,45 @@ export default function Home() {
       </section>
 
       {/* Timeline */}
-      <section id="how" className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-16 sm:py-20 bg-[var(--innara-surface)]">
+      <section
+        id="plans"
+        className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-16 sm:py-20 bg-[var(--innara-surface)]"
+      >
         <div className="text-center mb-10">
-          <h2 className="text-2xl sm:text-3xl font-semibold text-slate-900">How Innara Works for You</h2>
-          <p className="mt-2 text-slate-600">Getting started is easier than you think. Here’s how Innara guides you every step of the way.</p>
+          <h2 className="text-2xl sm:text-3xl font-semibold text-slate-900">
+            How Innara Works for You
+          </h2>
+          <p className="mt-2 text-slate-600">
+            Getting started is easier than you think. Here’s how Innara guides you every step of the way.
+          </p>
         </div>
+
+        {/* Desktop timeline */}
         <div className="hidden md:block">
-          <div className="flex items-start justify-between gap-6">
+          <div className="relative flex items-start justify-between">
+            {/* Connector line across all steps */}
+            <div className="absolute top-7 left-50 right-50 h-[2px] bg-[var(--innara-primary)] z-0" />
+
             {[
               { n: 1, t: "Tell Innara About You", bullets: ["Health profile", "Goals", "Preferences"] },
               { n: 2, t: "Get Your Smart Plan", bullets: ["Weekly plan", "Groceries", "Prep tips"] },
               { n: 3, t: "Track & Adapt", bullets: ["Log progress", "Insights", "Adjust easily"] },
-            ].map((s, idx, arr) => (
-              <div key={s.n} className="flex-1">
-                <div className="flex items-center">
-                  <motion.div whileHover={{ scale: 1.08 }} className="relative z-10 h-14 w-14 rounded-full bg-white border border-slate-200 grid place-content-center text-[var(--innara-primary)] font-semibold shadow-sm">{s.n}</motion.div>
-                  {idx < arr.length - 1 && <div className="ml-4 mr-4 h-[2px] bg-slate-200 flex-1" />}
-                </div>
-                <div className="mt-4 text-center">
-                  <div className="font-semibold text-slate-900">{s.t}</div>
-                  <ul className="mt-2 text-sm text-slate-600 space-y-1">
+            ].map((s) => (
+              <div key={s.n} className="flex-1 flex flex-col items-center">
+                {/* Circle sits on the line, above it */}
+                <motion.div
+                  whileHover={{ scale: 1.08 }}
+                  className="relative z-10 h-14 w-14 rounded-full bg-white border border-slate-200 
+                            grid place-content-center text-[var(--innara-primary)] font-semibold shadow-sm"
+                >
+                  {s.n}
+                </motion.div>
+
+                {/* Card directly under circle */}
+                <div className="mt-6 w-full max-w-[220px] rounded-xl border border-slate-200 bg-white shadow-sm 
+                                p-4 transform transition-transform duration-300 hover:scale-105">
+                  <div className="font-semibold text-slate-900 text-center">{s.t}</div>
+                  <ul className="mt-2 text-sm text-slate-600 space-y-1 text-left">
                     {s.bullets.map((b) => (
                       <li key={b}>• {b}</li>
                     ))}
@@ -321,55 +357,140 @@ export default function Home() {
             ))}
           </div>
         </div>
+
+        {/* Mobile cards */}
         <div className="md:hidden space-y-6">
-          {[{n:1,t:"Tell Innara About You",bullets:["Health profile","Goals","Preferences"]},{n:2,t:"Get Your Smart Plan",bullets:["Weekly plan","Groceries","Prep tips"]},{n:3,t:"Track & Adapt",bullets:["Log progress","Insights","Adjust easily"]}].map((s)=> (
-            <div key={s.n} className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+          {[
+            { n: 1, t: "Tell Innara About You", bullets: ["Health profile", "Goals", "Preferences"] },
+            { n: 2, t: "Get Your Smart Plan", bullets: ["Weekly plan", "Groceries", "Prep tips"] },
+            { n: 3, t: "Track & Adapt", bullets: ["Log progress", "Insights", "Adjust easily"] },
+          ].map((s) => (
+            <div
+              key={s.n}
+              className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm"
+            >
               <div className="flex items-center gap-3">
-                <div className="h-10 w-10 rounded-full bg-[var(--innara-surface)] text-[var(--innara-primary)] grid place-content-center font-semibold">{s.n}</div>
+                <div className="h-10 w-10 rounded-full bg-[var(--innara-surface)] text-[var(--innara-primary)] grid place-content-center font-semibold">
+                  {s.n}
+                </div>
                 <div className="font-semibold text-slate-900">{s.t}</div>
               </div>
               <ul className="mt-2 text-sm text-slate-600 space-y-1">
-                {s.bullets.map((b)=> (<li key={b}>• {b}</li>))}
+                {s.bullets.map((b) => (
+                  <li key={b}>• {b}</li>
+                ))}
               </ul>
             </div>
           ))}
         </div>
       </section>
 
-
       {/* Articles (Blog) */}
       <section id="blog" className="bg-[var(--innara-surface)]">
         <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
-          <motion.div variants={fadeIn} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.3 }} className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-[var(--innara-footer)]">Make Our Kitchen Your Own</h2>
-            <p className="mt-3 max-w-3xl mx-auto text-slate-700">Dive into our collection of hormone-friendly recipes, nutrition insights, and meal planning strategies. Everything you need to nourish your body and support your wellness journey.</p>
+          <motion.div
+            variants={fadeIn}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, amount: 0.3 }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-[var(--innara-footer)]">
+              Make Our Kitchen Your Own
+            </h2>
+            <p className="mt-3 max-w-3xl mx-auto text-slate-700">
+              Dive into our collection of hormone-friendly recipes, nutrition insights, and meal
+              planning strategies. Everything you need to nourish your body and support your wellness
+              journey.
+            </p>
           </motion.div>
+
           <div className="grid md:grid-cols-3 gap-6">
-            {Array.from({ length: 3 }).map((_, i) => (
-              <motion.article key={i} variants={cardSpring(i % 2 === 0 ? "left" : "right")} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.25 }} className="rounded-2xl border border-slate-200 bg-white shadow-sm flex flex-col overflow-hidden">
+            {[
+              {
+                tag: "Hormonal Health",
+                time: "6 min read",
+                title: "Balancing Hormones Naturally With Everyday Foods",
+                excerpt:
+                  "From flaxseeds to leafy greens, discover how simple food choices can help you feel more energized and balanced throughout your cycle.",
+                author: "Dr. Anika Rao",
+                date: "August 2, 2024",
+                img: "/blog/blog-1.jpg",
+              },
+              {
+                tag: "Nutrition Insights",
+                time: "4 min read",
+                title: "The Science of Meal Timing for Better Energy",
+                excerpt:
+                  "Learn how syncing your meals with your body’s natural rhythms can curb cravings, stabilize mood, and supercharge your daily energy.",
+                author: "Dr. Maya Lewis",
+                date: "July 18, 2024",
+                img: "/blog/blog-2.jpg",
+              },
+              {
+                tag: "Wellness & Lifestyle",
+                time: "5 min read",
+                title: "Stress, Sleep & Hormones: The Hidden Connection",
+                excerpt:
+                  "Your bedtime routine may be the missing puzzle piece to balanced hormones. Explore simple strategies for restorative sleep.",
+                author: "Coach Daniel Kim",
+                date: "June 30, 2024",
+                img: "/blog/blog-3.jpg",
+              },
+            ].map((item, i) => (
+              <motion.article
+                key={i}
+                variants={cardSpring(i % 2 === 0 ? "left" : "right")}
+                initial="hidden"
+                whileInView="show"
+                viewport={{ once: true, amount: 0.25 }}
+                className="rounded-2xl border border-slate-200 bg-white shadow-sm flex flex-col overflow-hidden"
+              >
+                {/* Image / Thumbnail */}
                 <div className="p-6 pb-0">
-                  <div className="aspect-video w-full rounded-xl bg-purple-100" />
+                  <div className="aspect-video w-full rounded-xl overflow-hidden">
+                    <img
+                      src={item.img}
+                      alt={item.title}
+                      className="h-full w-full object-cover"
+                    />
+                  </div>
                 </div>
+
+                {/* Content */}
                 <div className="p-6 pt-4">
                   <div className="flex items-center justify-between text-xs text-slate-500">
-                    <span className="inline-block rounded-full border border-[color:var(--innara-primary)] px-3 py-1 text-[color:var(--innara-primary)]">Hormonal Health</span>
-                    <span>5 min read</span>
+                    <span className="inline-block rounded-full border border-[color:var(--innara-primary)] px-3 py-1 text-[color:var(--innara-primary)]">
+                      {item.tag}
+                    </span>
+                    <span>{item.time}</span>
                   </div>
-                  <h3 className="mt-4 text-xl font-bold text-[var(--innara-footer)] leading-snug">Understanding Your Cycle Through Nutrition</h3>
-                  <p className="mt-3 text-sm text-slate-600">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                  <h3 className="mt-4 text-xl font-bold text-[var(--innara-footer)] leading-snug">
+                    {item.title}
+                  </h3>
+                  <p className="mt-3 text-sm text-slate-600">{item.excerpt}</p>
                 </div>
+
+                {/* Footer */}
                 <div className="px-6 pb-4">
                   <div className="h-px w-full bg-slate-200 mb-3" />
-                  <div className="flex items-center justify-between text-[13px] text-slate-600">
+                  <div className="flex items-center justify-between text-[13px] text-slate-600 flex-wrap gap-2">
                     <div className="flex items-center gap-2">
-                      <span className="inline-grid place-content-center h-5 w-5 rounded-full bg-slate-200">👩‍⚕️</span>
-                      <span>Dr. Sarah Chen</span>
+                      <span className="inline-grid place-content-center h-5 w-5 rounded-full bg-slate-200">
+                        👤
+                      </span>
+                      <span>{item.author}</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <span className="inline-grid place-content-center h-5 w-5 rounded bg-slate-200">📅</span>
-                      <span>March 15, 2024</span>
+                      <span className="inline-grid place-content-center h-5 w-5 rounded bg-slate-200">
+                        📅
+                      </span>
+                      <span>{item.date}</span>
                     </div>
-                    <a className="group inline-flex items-center gap-1 text-slate-700 hover:text-[var(--innara-primary)]" href="#">
+                    <a
+                      className="group inline-flex items-center gap-1 text-slate-700 hover:text-[var(--innara-primary)]"
+                      href="#"
+                    >
                       Read More
                       <span className="transition-transform group-hover:translate-x-0.5">↗</span>
                     </a>
@@ -378,8 +499,13 @@ export default function Home() {
               </motion.article>
             ))}
           </div>
+
+          {/* CTA */}
           <div className="mt-10 text-center">
-            <a href="#blog" className="inline-flex items-center justify-center rounded-full bg-[var(--innara-primary)] text-white px-6 sm:px-8 py-3 text-sm font-semibold shadow-sm hover:brightness-90">
+            <a
+              href="#blog"
+              className="inline-flex items-center justify-center rounded-full bg-[var(--innara-primary)] text-white px-6 sm:px-8 py-3 text-sm font-semibold shadow-sm hover:brightness-90"
+            >
               View all Articles
               <span className="ml-2">➜</span>
             </a>
@@ -398,12 +524,23 @@ export default function Home() {
             <h3 className="text-lg font-semibold text-slate-900">Get Connected</h3>
             <div className="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-4">
               {[
-                { title: 'Early Access', desc: 'Be first to try new features', icon: '⚡' },
-                { title: 'Partnership', desc: 'Collaborate with Innara', icon: '🤝' },
-                { title: 'Newsletter', desc: 'Monthly insights & recipes', icon: '📰' },
+                { title: "Early Access", desc: "Be first to try new features", icon: "/icons/gift.png" },
+                { title: "Partnership", desc: "Collaborate with Innara", icon: "/icons/handshake.png" },
+                { title: "Newsletter", desc: "Monthly insights & recipes", icon: "/icons/newsletter.png" },
               ].map((card) => (
-                <div key={card.title} className="rounded-xl border border-slate-200 p-4 hover:shadow-sm transition-shadow">
-                  <div className="h-9 w-9 rounded-lg bg-[var(--innara-surface)] grid place-content-center text-lg text-[var(--innara-primary)]">{card.icon}</div>
+                <div
+                  key={card.title}
+                  className="rounded-xl border border-slate-200 p-4 hover:shadow-sm transition-shadow"
+                >
+                  <div className="h-9 w-9 rounded-lg bg-[var(--innara-surface)] grid place-content-center">
+                    <Image
+                      src={card.icon}
+                      alt={card.title}
+                      width={20}
+                      height={20}
+                      className="object-contain"
+                    />
+                  </div>
                   <div className="mt-2 font-medium text-slate-900">{card.title}</div>
                   <div className="text-sm text-slate-600">{card.desc}</div>
                 </div>
@@ -437,6 +574,7 @@ export default function Home() {
       {/* Footer */}
       <footer className="bg-[var(--innara-footer)] text-slate-200">
         <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
+          {/* Footer Columns */}
           <div className="grid md:grid-cols-4 gap-10">
             <div>
               <div className="text-xl font-bold text-white">Innara</div>
@@ -477,20 +615,36 @@ export default function Home() {
               </ul>
             </div>
           </div>
+
+          {/* Bottom Row */}
           <div className="mt-10 flex items-center justify-between flex-col sm:flex-row gap-4">
             <p className="text-xs text-slate-400">
               © {new Date().getFullYear()} Innara. All rights reserved.
             </p>
-            <div className="flex items-center gap-3 text-slate-300">
-              <span className="h-8 w-8 grid place-content-center rounded-full bg-[#1B0F2B]">
-                IG
-              </span>
-              <span className="h-8 w-8 grid place-content-center rounded-full bg-[#1B0F2B]">
-                FB
-              </span>
-              <span className="h-8 w-8 grid place-content-center rounded-full bg-[#1B0F2B]">
-                IN
-              </span>
+
+            {/* Social Icons */}
+            <div className="flex items-center gap-3">
+              {[
+                { name: "Instagram", icon: "/icons/instagram.png", link: "https://www.instagram.com/innara.ai/" },
+                { name: "Medium", icon: "/icons/medium.png", link: "https://medium.com/@innara.general" },
+                { name: "LinkedIn", icon: "/icons/linkedin.png", link: "https://www.linkedin.com/company/innara-ai/" },
+              ].map((social) => (
+                <a
+                  key={social.name}
+                  href={social.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="h-8 w-8 grid place-content-center rounded-full bg-[#1B0F2B] hover:bg-[#2C1B45] transition-colors"
+                >
+                  <Image
+                    src={social.icon}
+                    alt={social.name}
+                    width={20}
+                    height={20}
+                    className="object-contain"
+                  />
+                </a>
+              ))}
             </div>
           </div>
         </div>
