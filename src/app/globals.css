@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 :root {
-  --innara-primary: #7A69AF; /* CTA buttons, highlighted text */
-  --innara-surface: #F0F0FF; /* light surface */
+  --innara-primary: #9999CC; /* CTA buttons, highlighted text */
+  --innara-surface: #ECECFF; /* light surface */
   --innara-footer: #2E1A47;  /* footer background */
 }
 
@@ -10,6 +10,7 @@
 @keyframes fade-up { 0% { opacity: 0; transform: translateY(12px); } 100% { opacity: 1; transform: translateY(0); } }
 @keyframes float { 0% { transform: translateY(0); } 50% { transform: translateY(-6px); } 100% { transform: translateY(0); } }
 @keyframes pulse-glow { 0%, 100% { box-shadow: 0 0 0 0 rgba(147, 51, 234, 0.35); } 50% { box-shadow: 0 0 0 10px rgba(147, 51, 234, 0); } }
+@keyframes shine { 0% { background-position: 0% 0% } 100% { background-position: 200% 0% } }
 
 .animate-fade-up { animation: fade-up .7s ease-out both; }
 .animate-float { animation: float 6s ease-in-out infinite; }
