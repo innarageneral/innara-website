@@ -340,7 +340,7 @@ export default function Home() {
             How Innara Works for You
           </h2>
           <p className="mt-2 text-slate-600">
-            Getting started is easier than you think. Here's how Innara guides you every step of the way.
+            Getting started is easier than you think. Here&apos;s how Innara guides you every step of the way.
           </p>
         </div>
 
