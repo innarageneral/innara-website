@@ -77,7 +77,7 @@ export default function Home() {
               <button
                 className="inline-flex items-center justify-center rounded-2xl px-5 py-3 text-sm font-semibold text-white shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--innara-primary)]/40 animate-fade-up animate-glow"
                 style={{
-                  backgroundColor: "var(--innara-primary)",
+                  backgroundColor: "var(--innara-footer)",
                   animationDelay: "180ms",
                 }}
               >
@@ -143,12 +143,12 @@ export default function Home() {
               transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
               className="relative w-48 sm:w-56 md:w-72 lg:w-80 aspect-square"
             >
-              <Image
+        <Image
                 src="/icons/hippo-scooter.png"
                 alt="Hippo on a scooter illustration"
                 fill
                 className="object-contain drop-shadow-xl"
-                priority
+          priority
                 quality={90}
               />
             </motion.div>
@@ -217,11 +217,11 @@ export default function Home() {
               <li className="flex items-start gap-3">
                 <span className="mt-1 h-2.5 w-2.5 rounded-full bg-[#7A69AF]"></span>
                 Easy prep guidance
-              </li>
+          </li>
               <li className="flex items-start gap-3">
                 <span className="mt-1 h-2.5 w-2.5 rounded-full bg-[#7A69AF]"></span>
                 Track progress & wellness
-              </li>
+          </li>
             </ul>
             <div className="mt-6">
               <a
@@ -471,7 +471,7 @@ export default function Home() {
                 {/* Image / Thumbnail */}
                 <div className="p-6 pb-0">
                   <div className="aspect-video w-full rounded-xl overflow-hidden relative">
-                    <Image
+            <Image
                       src={item.img}
                       alt={item.title}
                       fill
@@ -517,8 +517,8 @@ export default function Home() {
                     >
                       Read More
                       <span className="transition-transform group-hover:translate-x-0.5">↗</span>
-                    </a>
-                  </div>
+          </a>
+        </div>
                 </div>
               </motion.article>
             ))}
@@ -557,7 +557,7 @@ export default function Home() {
                   className="rounded-xl border border-slate-200 p-4 hover:shadow-sm transition-shadow"
                 >
                   <div className="h-9 w-9 rounded-lg bg-[var(--innara-surface)] grid place-content-center">
-                    <Image
+          <Image
                       src={card.icon}
                       alt={card.title}
                       width={20}
@@ -656,11 +656,11 @@ export default function Home() {
                 <a
                   key={social.name}
                   href={social.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
+          target="_blank"
+          rel="noopener noreferrer"
                   className="h-8 w-8 grid place-content-center rounded-full bg-[#1B0F2B] hover:bg-[#2C1B45] transition-colors"
-                >
-                  <Image
+        >
+          <Image
                     src={social.icon}
                     alt={social.name}
                     width={20}
