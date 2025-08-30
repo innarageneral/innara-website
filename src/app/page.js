@@ -444,7 +444,7 @@ export default function Home() {
                 time: "4 min read",
                 title: "The Science of Meal Timing for Better Energy",
                 excerpt:
-                  "Learn how syncing your meals with your body's natural rhythms can curb cravings, stabilize mood, and supercharge your daily energy.",
+                  "Learn how syncing your meals with your body&apos;s natural rhythms can curb cravings, stabilize mood, and supercharge your daily energy.",
                 author: "Dr. Maya Lewis",
                 date: "July 18, 2024",
                 img: "/blog/blog-2.jpg",
