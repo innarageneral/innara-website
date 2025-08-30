@@ -89,7 +89,7 @@ export default function Home() {
       </header>
 
      {/* Hero */}
-      <section className="relative overflow-hidden mx-auto w-full max-w-7xl p-[40px] sm:p-[60px] lg:p-[75px] py-8 sm:py-10 bg-[var(--innara-surface)]">
+      <section className="relative overflow-hidden mx-auto w-full max-w-7xl p-[40px] sm:p-[60px] lg:p-[75px] py-8 sm:py-10 bg-gradient-to-l from-[var(--innara-surface)] to-white">
         <div className="grid md:grid-cols-2 gap-6 items-center">
           {/* Text column */}
           <div className="text-center md:text-left max-w-3xl md:max-w-xl mx-auto md:mx-0">
@@ -119,14 +119,15 @@ export default function Home() {
             >
               <a
                 href="#download"
-                className="inline-flex items-center justify-center rounded-2xl bg-[var(--innara-primary)] px-5 py-3 text-sm font-semibold text-white shadow-sm transition-transform hover:-translate-y-0.5 hover:brightness-90"
+                className="inline-flex items-center justify-center rounded-2xl px-5 py-3 text-sm font-semibold shadow-sm transition-transform hover:-translate-y-0.5 hover:brightness-90"
+                style={{ backgroundColor: "#2E1A47", color: "#FFFFFF" }}
               >
                 Download the App 
                 <span className="ml-2">➜</span>
               </a>
               <a
-                href="#how"
-                className="inline-flex items-center justify-center rounded-2xl border border-[var(--innara-primary)] px-5 py-3 text-sm font-semibold text-[var(--innara-primary)] transition-colors hover:bg-[var(--innara-surface)]"
+                href="#plans"
+                className="inline-flex items-center justify-center rounded-2xl border border-[var(--innara-primary)] px-5 py-3 text-sm font-semibold text-[var(--innara-primary)] transition-all duration-200 hover:bg-[#9999CC] hover:text-white hover:border-[#9999CC] active:bg-[#9999CC] active:text-white active:border-[#9999CC]"
               >
                 See How It Works
                 <span className="ml-2">➜</span>
@@ -160,17 +161,17 @@ export default function Home() {
         <div className="h-0.5 w-full bg-[var(--innara-primary)]/50 mb-12" />
         <div className="grid sm:grid-cols-3 gap-10 text-center">
           {[
-            { title: "Free", subtitle: "7 day trial", icon: "/icons/gift.png" },
-            { title: "24 hr", subtitle: "Set up Support", icon: "/icons/clock.png" },
-            { title: "2x", subtitle: "Energy Increase", icon: "/icons/lightning.png" },
+            { title: "Free", subtitle: "7 day trial", icon: "/icons/hippo-gift.png" },
+            { title: "24 hr", subtitle: "Set up Support", icon: "/icons/hippo-clock.png" },
+            { title: "2x", subtitle: "Energy Increase", icon: "/icons/hippo-speed.png" },
           ].map((item) => (
             <div key={item.title} className="flex flex-col items-center">
               <div className="relative h-24 w-24 sm:h-28 sm:w-28 rounded-full bg-[var(--innara-surface)] grid place-content-center">
                 <Image
                   src={item.icon}
                   alt={item.title}
-                  width={40}
-                  height={40}
+                  width={54}
+                  height={54}
                   className="object-contain"
                 />
               </div>
@@ -339,7 +340,7 @@ export default function Home() {
             How Innara Works for You
           </h2>
           <p className="mt-2 text-slate-600">
-            Getting started is easier than you think. Here’s how Innara guides you every step of the way.
+            Getting started is easier than you think. Here's how Innara guides you every step of the way.
           </p>
         </div>
 
@@ -443,7 +444,7 @@ export default function Home() {
                 time: "4 min read",
                 title: "The Science of Meal Timing for Better Energy",
                 excerpt:
-                  "Learn how syncing your meals with your body’s natural rhythms can curb cravings, stabilize mood, and supercharge your daily energy.",
+                  "Learn how syncing your meals with your body's natural rhythms can curb cravings, stabilize mood, and supercharge your daily energy.",
                 author: "Dr. Maya Lewis",
                 date: "July 18, 2024",
                 img: "/blog/blog-2.jpg",
@@ -674,4 +675,4 @@ export default function Home() {
       </footer>
     </div>
   );
-} 
+}
