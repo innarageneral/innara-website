@@ -332,9 +332,13 @@ export default function Home() {
               ],
             },
             {
-              title: "Community Support",
-              desc: "Connect with others on the same journey, share and grow together.",
-              points: ["Group discussions", "Expert advice", "Safe, supportive space"],
+              title: "AI Nutrition Chatbot",
+              desc: "Get instant guidance and personalized suggestions from our smart AI assistant.",
+              points: [
+                "Ask questions about meals and nutrients",
+                "Receive cycle-specific advice instantly",
+                "Get reminders and tips tailored to your goals"
+              ],
             },
           ].map((f, i) => (
             <div key={i} className="group [perspective:800px] animate-fade-up" style={{ animationDelay: `${i * 80}ms` }}>
