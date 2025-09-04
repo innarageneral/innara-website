@@ -97,7 +97,7 @@ export default function Home() {
           {/* Text column */}
           <div className="text-center md:text-left max-w-3xl md:max-w-xl mx-auto md:mx-0">
             <p
-              className="inline-block text-xs tracking-wide uppercase text-[var(--innara-primary)] bg-[var(--innara-surface)] rounded-full px-3 py-1 mb-5 animate-fade-up border border-[var(--innara-primary)]"
+              className="inline-block text-xs tracking-wide uppercase text-white bg-[linear-gradient(90deg,#7A69AF,#9B8BD1,#7A69AF)] rounded-full px-3 py-1 mb-5 animate-fade-up border border-[var(--innara-primary)]"
               style={{ animationDelay: "80ms" }}
             >
               New: Hormone-Smart Meal Planning App
@@ -277,7 +277,7 @@ export default function Home() {
       </section>
 
       {/* Features */}
-      <section id="features" className="relative bg-white px-6 lg:px-12 py-20">
+      <section id="features" className="relative bg-white px-6 lg:px-12 py-20 bg-gradient-to-l from-white to-[#CCCCFF]">
         <div className="max-w-6xl mx-auto text-center">
           <h2 className="text-2xl sm:text-3xl font-semibold">
             Features that support your journey
@@ -373,7 +373,7 @@ export default function Home() {
       {/* Timeline */}
       <section
         id="plans"
-        className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-16 sm:py-20"
+        className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-16 sm:py-20 bg-[var(--innara-surface)]"
       >
         {/* Hippo mascot at top center */}
         <div className="flex justify-center mb-8">
@@ -398,7 +398,7 @@ export default function Home() {
         <div className="hidden md:block">
           <div className="relative flex items-start justify-between">
             {/* Connector line across all steps */}
-            <div className="absolute top-7 left-50 right-50 h-[2px] bg-[var(--innara-primary)] z-0" />
+            <div className="absolute top-14 left-50 right-50 h-[2px] bg-[var(--innara-primary)] z-0" />
 
             {[
               { n: 1, t: "Tell Innara About You", bullets: ["Share your health details so Mealistik knows your needs.", "Set your personal health and fitness goals", "Tell us what foods and flavors you like"] },
@@ -409,7 +409,7 @@ export default function Home() {
                 {/* Circle sits on the line, above it */}
                 <motion.div
                     whileHover={{ scale: 1.08 }}
-                    className="relative z-10 h-30 w-30 rounded-full bg-[#ECECFF] 
+                    className="relative z-10 h-30 w-30 rounded-full bg-[#FFFFFF] 
                     grid place-content-center text-[#7A69AF] text-xl sm:text-2xl lg:text-3xl font-semibold shadow-sm"
                 >
                 {s.n}
@@ -458,13 +458,13 @@ export default function Home() {
       </section>
          
       {/* Community / Contact */}
-      <section id="contact" className="relative bg-[#ECECFF] px-6 lg:px-12 py-20">
+      <section id="contact" className="relative bg-[#FFFFFF] px-6 lg:px-12 py-20 bg-gradient-to-l from-[#CCCCFF] to-white">
         {/* Wave at top (flipped from Features) */}
         <div className="absolute top-0 left-0 right-0 -translate-y-full rotate-180">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 1440 320"
-            className="w-full h-32 text-[#ECECFF]"
+            className="w-full h-32 text-[#FFFFFF]"
             preserveAspectRatio="none"
           >
             <path
@@ -513,15 +513,7 @@ export default function Home() {
             <div>
               <label className="text-sm font-medium text-slate-700">Email</label>
               <input type="email" className="mt-1 w-full rounded-xl border border-slate-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[color:var(--innara-primary)]/30" placeholder="you@example.com" />
-            </div>
-            <div>
-              <label className="text-sm font-medium text-slate-700">I&apos;m interested in</label>
-              <select className="mt-1 w-full rounded-xl border border-slate-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[color:var(--innara-primary)]/30">
-                <option>Meal Planning</option>
-                <option>Nutrition Guides</option>
-                <option>Community</option>
-              </select>
-            </div>
+            </div>  
             <div className="pt-2">
               <button className="inline-flex items-center justify-center rounded-2xl bg-[var(--innara-primary)] px-5 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:brightness-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--innara-primary)]/40 w-full md:w-auto">Join Innara Community</button>
             </div>
