@@ -12,7 +12,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "Innara Website",
+  title: "Mealistik",
   description: "A meal prepping app for individuals with chronic illnesses due to hormonal imbalance",
 };
 

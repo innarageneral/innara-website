@@ -231,7 +231,7 @@ export default function Home() {
             </h2>
             <p className="mt-4 text-slate-600">
               Hormonal imbalances affect energy, mood, and metabolism. Traditional
-              meal planning ignores these crucial signals. Innara aligns nutrition
+              meal planning ignores these crucial signals. Mealistik aligns nutrition
               with your hormonal patterns.
             </p>
             <ul className="mt-6 space-y-3 text-slate-700">
@@ -394,7 +394,7 @@ export default function Home() {
             How Mealistik Works for You
           </h2>
           <p className="mt-2 text-slate-600">
-            Getting started is easier than you think. Here&apos;s how Innara guides you every step of the way.
+            Getting started is easier than you think. Here&apos;s how Mealistik guides you every step of the way.
           </p>
         </div>
 
@@ -405,7 +405,7 @@ export default function Home() {
             <div className="absolute top-14 left-50 right-50 h-[2px] bg-[var(--innara-primary)] z-0" />
 
             {[
-              { n: 1, t: "Tell Innara About You", bullets: ["Share your health details so Mealistik knows your needs.", "Set your personal health and fitness goals", "Tell us what foods and flavors you like"] },
+              { n: 1, t: "Tell Mealistik About You", bullets: ["Share your health details so Mealistik knows your needs.", "Set your personal health and fitness goals", "Tell us what foods and flavors you like"] },
               { n: 2, t: "Get Your Smart Plan", bullets: ["Get a weekly meal plan made just for you.", "See exactly what to shop for, stress-free", "Follow easy tips to cook and prep faster"] },
               { n: 3, t: "Track & Adapt", bullets: ["Track your meals and progress with ease", "Get simple AI assisted insights on what’s working for you", "Tweak your plan anytime to fit your life"] },
             ].map((s) => (
@@ -437,7 +437,7 @@ export default function Home() {
         {/* Mobile cards */}
         <div className="md:hidden space-y-6">
           {[
-            { n: 1, t: "Tell Innara About You", bullets: ["Share your health details so Mealistik knows your needs", "Set your personal health and fitness goals", "Tell us what foods and flavors you like"] },
+            { n: 1, t: "Tell Mealistik About You", bullets: ["Share your health details so Mealistik knows your needs", "Set your personal health and fitness goals", "Tell us what foods and flavors you like"] },
             { n: 2, t: "Get Your Smart Plan", bullets: ["Get a weekly meal plan made just for you", "See exactly what to shop for, stress-free", "Follow easy tips to cook and prep faster"] },
             { n: 3, t: "Track & Adapt", bullets: ["Track your meals and progress with ease", "Get simple insights on what’s working for you", "Tweak your plan anytime to fit your life"] },
           ].map((s) => (
@@ -487,7 +487,7 @@ export default function Home() {
             <div className="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-4">
               {[
                 { title: "Early Access", desc: "Be first to try new features", icon: "/icons/gift.png" },
-                { title: "Partnership", desc: "Collaborate with Innara", icon: "/icons/handshake.png" },
+                { title: "Partnership", desc: "Collaborate with Mealistik", icon: "/icons/handshake.png" },
                 { title: "Newsletter", desc: "Monthly insights & recipes", icon: "/icons/newsletter.png" },
               ].map((card) => (
                 <div
@@ -587,7 +587,7 @@ export default function Home() {
           {/* Bottom Row */}
           <div className="mt-10 flex items-center justify-between flex-col sm:flex-row gap-4">
             <p className="text-xs text-slate-400">
-              © {new Date().getFullYear()} Innara. All rights reserved.
+              © {new Date().getFullYear()} Mealistik. All rights reserved.
             </p>
 
             {/* Social Icons */}
