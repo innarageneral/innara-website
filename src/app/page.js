@@ -161,7 +161,7 @@ export default function Home() {
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 1440 320"
-            className="w-full h-20 sm:h-32 text-white"
+            className="w-full h-32 text-white"
             preserveAspectRatio="none"
           >
             <path
@@ -363,7 +363,7 @@ export default function Home() {
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 1440 320"
-            className="w-full h-20 sm:h-32 text-[#ECECFF]"
+            className="w-full h-32 text-[#ECECFF]"
             preserveAspectRatio="none"
           >
             <path
@@ -468,7 +468,7 @@ export default function Home() {
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 1440 320"
-            className="w-full h-20 sm:h-32 text-[#FFFFFF]"
+            className="w-full h-32 text-[#FFFFFF]"
             preserveAspectRatio="none"
           >
             <path
@@ -528,7 +528,7 @@ export default function Home() {
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 1440 320"
-            className="w-full h-20 sm:h-32 text-[#2E1A47]"
+            className="w-full h-32 text-[#2E1A47]"
             preserveAspectRatio="none"
           >
             <path
