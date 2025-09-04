@@ -157,11 +157,11 @@ export default function Home() {
             </motion.div>
           </div>
         </div>
-        <div className="relative sm:absolute bottom-0 left-0 right-0 w-full">
+        <div className="absolute bottom-0 left-0 right-0">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 1440 320"
-            className="w-full h-32 text-white"
+            className="w-full h-20 sm:h-32 text-white"
             preserveAspectRatio="none"
           >
             <path
@@ -359,11 +359,11 @@ export default function Home() {
           ))}
         </div>
         {/* Wave divider at bottom (into Contact bg) */}
-        <div className="relative sm:absolute bottom-0 left-0 right-0 w-full">
+        <div className="absolute bottom-0 left-0 right-0">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 1440 320"
-            className="w-full h-32 text-[#ECECFF]"
+            className="w-full h-20 sm:h-32 text-[#ECECFF]"
             preserveAspectRatio="none"
           >
             <path
@@ -464,11 +464,11 @@ export default function Home() {
       {/* Community / Contact */}
       <section id="contact" className="relative bg-[#FFFFFF] px-6 lg:px-12 py-20 bg-gradient-to-l from-[#CCCCFF] to-white">
         {/* Wave at top (flipped from Features) */}
-        <div className="relative sm:absolute bottom-0 left-0 right-0 w-full">
+        <div className="absolute top-0 left-0 right-0 -translate-y-full rotate-180">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 1440 320"
-            className="w-full h-32 text-[#FFFFFF]"
+            className="w-full h-20 sm:h-32 text-[#FFFFFF]"
             preserveAspectRatio="none"
           >
             <path
@@ -524,11 +524,11 @@ export default function Home() {
           </form>
         </div>
         {/* Wave divider at bottom (into footer bg) */}
-        <div className="relative sm:absolute bottom-0 left-0 right-0 w-full">
+        <div className="absolute bottom-0 left-0 right-0">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 1440 320"
-            className="w-full h-32 text-[#2E1A47]"
+            className="w-full h-20 sm:h-32 text-[#2E1A47]"
             preserveAspectRatio="none"
           >
             <path
