@@ -33,6 +33,18 @@ function ScrollProgress() {
 export default function Home() {
   const [hoveredStep, setHoveredStep] = useState(null);
 
+  // inside the Home component, before return(...)
+  const scrollToPlans = (e) => {
+    if (e) e.preventDefault(); // keep keyboard/anchor semantics but stop instant jump
+    const el = document.getElementById("plans");
+    if (!el) return;
+    const header = document.querySelector("header");
+    const headerHeight = header ? header.getBoundingClientRect().height : 0;
+    const top = el.getBoundingClientRect().top + window.scrollY - headerHeight - 12; // 12px cushion
+    window.scrollTo({ top, behavior: "smooth" });
+  };
+
+
   return (
     <div className="min-h-screen bg-white">
       <ScrollProgress />
@@ -84,7 +96,7 @@ export default function Home() {
                   animationDelay: "180ms",
                 }}
               >
-                Download App
+                Join the Waitlist
               </button>
             </div>
           </div>
@@ -125,12 +137,12 @@ export default function Home() {
                 className="inline-flex items-center justify-center rounded-2xl px-5 py-3 text-sm font-semibold shadow-sm transition-transform hover:-translate-y-0.5 hover:brightness-90"
                 style={{ backgroundColor: "#2E1A47", color: "#FFFFFF" }}
               >
-                Download the App
+                Join the Waitlist
                 <span className="ml-2">➜</span>
               </a>
               <a
                 href="#plans"
-                className="inline-flex items-center justify-center rounded-2xl border border-[var(--innara-primary)] px-5 py-3 text-sm font-semibold text-[var(--innara-primary)] transition-all duration-200 hover:bg-[#9999CC] hover:text-white hover:border-[#9999CC] active:bg-[#9999CC] active:text-white active:border-[#9999CC]"
+                className="relative z-50 inline-flex items-center justify-center rounded-2xl border border-[var(--innara-primary)] px-5 py-3 text-sm font-semibold text-[var(--innara-primary)] transition-all duration-200 hover:bg-[#9999CC] hover:text-white hover:border-[#9999CC]"
               >
                 See How It Works
                 <span className="ml-2">➜</span>
@@ -252,15 +264,6 @@ export default function Home() {
                 Track progress & wellness
           </li>
             </ul>
-            <div className="mt-6">
-              <a
-                href="#features"
-                className="inline-flex items-center justify-center rounded-2xl border border-[var(--innara-primary)] px-5 py-3 text-sm font-semibold text-[var(--innara-primary)] transition-colors hover:bg-[var(--innara-surface)]"
-              >
-                Learn More about Mealistik
-                <span className="ml-2">➜</span>
-              </a>
-            </div>
           </motion.div>
           <div className="flex justify-center">
           <div className="relative w-36 sm:w-40 md:w-44 lg:w-48 aspect-[9/19] rounded-[1.5rem] border-4 border-slate-900/90 bg-slate-100 shadow-lg overflow-hidden">
@@ -292,52 +295,57 @@ export default function Home() {
           {[
             {
               title: "Smart Meal Plans",
-              desc: "Meals synced with your hormonal cycle for optimal energy and mood balance.",
-              points: ["Cycle-aware recipes", "Grocery lists", "Prep reminders"],
-            },
-            {
-              title: "Cycle Tracking",
-              desc: "Understand your body better with personalized cycle logging and insights.",
+              desc: "Personalized meals built for real life and real health specifically designed to support PCOS, thyroid, diabetes, and other chronic conditions.",
               points: [
-                "Phase-based guidance",
-                "Mood + symptom logging",
-                "Cycle predictions",
-              ],
-            },
-            {
-              title: "Nutrition Insights",
-              desc: "Get science-backed tips tailored to your cycle phase.",
-              points: [
-                "Hormone-supportive foods",
-                "Easy swaps & hacks",
-                "Data-driven recommendations",
-              ],
-            },
-            {
-              title: "Mind-Body Wellness",
-              desc: "Support your mental and emotional health alongside nutrition.",
-              points: [
-                "Guided relaxation",
-                "Stress management tools",
-                "Phase-specific workouts",
+                "Swap meals as often as you like", 
+                "Recipes for every cooking skill level, whether you&apos;re a beginner or a pro", 
+                "Condition-friendly options that fit your needs"
               ],
             },
             {
               title: "Recipe Library",
-              desc: "Explore delicious, cycle-friendly recipes crafted by experts.",
+              desc: "Discover recipes that are simple, flexible, and tailored to your needs.",
               points: [
-                "Quick & easy meals",
-                "Ingredient-based search",
-                "Personalized suggestions",
+                "Quick & easy meals for busy days",
+                "Personalized suggestions based on your health goals",
+                "Recipes inspired by multiple cultures and cuisines",
+              ],
+            },
+            {
+              title: "Daily Check-Ins",
+              desc: "Stay consistent with gentle, guilt-free guidance—always here, even when you need to bounce back.",
+              points: [
+                "Quick daily meal & mood check-ins",
+                "Supportive reminders that keep you on track",
+                "Encouragement without judgment",
+              ],
+            },
+            {
+              title: "Progress Dashboard",
+              desc: "A simple way to see how your nutrition is supporting your health.",
+              points: [
+                "Track your meals and energy levels",
+                "Notice trends across your cycle",
+                "Celebrate small wins",
+              ],
+            },
+            {
+              title: "Grocery Planning",
+              desc: "Turn your meal plan into a simple shopping experience.",
+              points: [
+                "Auto-generated grocery lists",
+                "Ingredient swaps to match preferences",
+                "Organized lists for easy shopping",
               ],
             },
             {
               title: "AI Nutrition Chatbot",
-              desc: "Get instant guidance and personalized suggestions from our smart AI assistant.",
+              desc: "Your 24/7 supportive food companion—always here to guide you without judgment.",
               points: [
-                "Ask questions about meals and nutrients",
-                "Receive cycle-specific advice instantly",
-                "Get reminders and tips tailored to your goals"
+                "Ask questions about meals & nutrients anytime",
+                "Get body-synced advice instantly",
+                "Receive reminders tailored to your goals",
+                "Even ask “Can I eat KFC or Maccas today?”—our Hippooo will make it work for you"
               ],
             },
           ].map((f, i) => (
@@ -377,6 +385,7 @@ export default function Home() {
       {/* Timeline */}
       <section
         id="plans"
+        style={{ scrollMarginTop: '88px' }} 
         className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-16 sm:py-20 bg-[var(--innara-surface)]"
       >
         {/* Hippo mascot at top center */}
@@ -556,30 +565,14 @@ export default function Home() {
                 <li>Features</li>
                 <li>How it Works</li>
                 <li>Pricing</li>
-                <li>Download</li>
-                <li>System Requirements</li>
-                <li>Release Notes</li>
               </ul>
             </div>
             <div>
               <div className="font-semibold text-white">Company</div>
               <ul className="mt-3 space-y-2 text-sm text-slate-300">
                 <li>About</li>
-                <li>Our Science</li>
-                <li>Healthcare Partners</li>
-                <li>Careers</li>
-                <li>Press Kit</li>
+                <li>Founders</li>
                 <li>Contact</li>
-              </ul>
-            </div>
-            <div>
-              <div className="font-semibold text-white">Resources</div>
-              <ul className="mt-3 space-y-2 text-sm text-slate-300">
-                <li>Blog</li>
-                <li>Nutrition Guides</li>
-                <li>Support Center</li>
-                <li>Privacy Policy</li>
-                <li>Terms of Service</li>
               </ul>
             </div>
           </div>
