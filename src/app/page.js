@@ -43,12 +43,13 @@ export default function Home() {
   };
 
   const scrollToSection = useCallback((id) => {
+    const headerOffset = 80; // adjust based on your navbar height
     const el = document.getElementById(id);
-    if (!el) return;
-    // Let CSS handle header offset via scroll-margin-top; this avoids race/offset calc issues
-    el.scrollIntoView({ behavior: "smooth", block: "start" });
+    if (el) {
+      const y = el.getBoundingClientRect().top + window.scrollY - headerOffset;
+      window.scrollTo({ top: y, behavior: "smooth" });
+    }
   }, []);
-
   
   return (
     <div className="min-h-screen bg-white">
@@ -142,12 +143,15 @@ export default function Home() {
               {/* Join our Waitlist */}
               <button
                 type="button"
-                onClick={() => { console.log('hero waitlist clicked'); scrollToSection('contact'); }}
-                className="inline-flex items-center justify-center rounded-2xl px-5 py-3 text-sm font-semibold text-white shadow-sm transition-colors"
-                style={{ backgroundColor: "var(--innara-footer)" }}
+                onClick={() => scrollToSection("contact")}
+                className="inline-flex items-center justify-center rounded-2xl px-5 py-3 text-sm font-semibold text-white shadow-sm transition-colors
+                          focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--innara-primary)]/40
+                          animate-fade-up animate-glow pointer-events-auto"
+                style={{ backgroundColor: "var(--innara-footer)", animationDelay: "180ms" }}
               >
                 Join our Waitlist
               </button>
+
               <button
                 onClick={() => scrollToSection("plans")}
                 className="relative z-50 inline-flex items-center justify-center rounded-2xl border border-[var(--innara-primary)] 
@@ -156,6 +160,7 @@ export default function Home() {
               >
                 See How it Works <span className="ml-2">➜</span>
               </button>
+
             </div>
           </div>
 
