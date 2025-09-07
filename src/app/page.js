@@ -96,7 +96,7 @@ export default function Home() {
                   animationDelay: "180ms",
                 }}
               >
-                Join the Waitlist
+                Join our Waitlist
               </button>
             </div>
           </div>
@@ -137,7 +137,7 @@ export default function Home() {
                 className="inline-flex items-center justify-center rounded-2xl px-5 py-3 text-sm font-semibold shadow-sm transition-transform hover:-translate-y-0.5 hover:brightness-90"
                 style={{ backgroundColor: "#2E1A47", color: "#FFFFFF" }}
               >
-                Join the Waitlist
+                Join our Waitlist
                 <span className="ml-2">➜</span>
               </a>
               <a
@@ -313,7 +313,7 @@ export default function Home() {
             },
             {
               title: "Daily Check-Ins",
-              desc: "Stay consistent with gentle, guilt-free guidance—always here, even when you need to bounce back.",
+              desc: "Stay consistent with gentle, guilt-free guidance. We&apos;re always here, even when you need to bounce back.",
               points: [
                 "Quick daily meal & mood check-ins",
                 "Supportive reminders that keep you on track",
@@ -340,7 +340,7 @@ export default function Home() {
             },
             {
               title: "AI Nutrition Chatbot",
-              desc: "Your 24/7 supportive food companion—always here to guide you without judgment.",
+              desc: "Your 24/7 supportive food companion. We're always here to guide you without judgment.",
               points: [
                 "Ask questions about meals & nutrients anytime",
                 "Get body-synced advice instantly",
@@ -528,7 +528,7 @@ export default function Home() {
               <input type="email" className="mt-1 w-full rounded-xl border border-slate-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[color:var(--innara-primary)]/30" placeholder="you@example.com" />
             </div>  
             <div className="pt-2">
-              <button className="inline-flex items-center justify-center rounded-2xl bg-[var(--innara-primary)] px-5 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:brightness-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--innara-primary)]/40 w-full md:w-auto">Join Innara Community</button>
+              <button className="inline-flex items-center justify-center rounded-2xl bg-[var(--innara-primary)] px-5 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:brightness-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--innara-primary)]/40 w-full md:w-auto">Join Mealistik Community</button>
             </div>
           </form>
         </div>
