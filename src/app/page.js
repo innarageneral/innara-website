@@ -2,6 +2,7 @@
 import { motion, useScroll } from "framer-motion";
 import Image from "next/image";
 import { useState } from "react";
+import { useCallback } from "react";
 
 // Variants for fade-in
 const fadeIn = {
@@ -30,7 +31,6 @@ function ScrollProgress() {
   );
 }
 
-
 export default function Home() {
   const [hoveredStep, setHoveredStep] = useState(null);
 
@@ -41,6 +41,14 @@ export default function Home() {
   const scrollToPlans = () => {
     document.getElementById("plans")?.scrollIntoView({ behavior: "smooth" });
   };
+
+  const scrollToSection = useCallback((id) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    // Let CSS handle header offset via scroll-margin-top; this avoids race/offset calc issues
+    el.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, []);
+
   
   return (
     <div className="min-h-screen bg-white">
@@ -86,9 +94,14 @@ export default function Home() {
               </a>
             </nav>
             <div className="flex items-center gap-3">
+              {/* Join our Waitlist */}
               <button
-                onClick={scrollToContact}
-                className="inline-flex items-center justify-center rounded-2xl px-5 py-3 text-sm font-semibold text-white shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--innara-primary)]/40 animate-fade-up animate-glow" style={{ backgroundColor: "var(--innara-footer)", animationDelay: "180ms", }}
+                type="button"
+                onClick={() => scrollToSection("contact")}
+                className="inline-flex items-center justify-center rounded-2xl px-5 py-3 text-sm font-semibold text-white shadow-sm transition-colors
+                          focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--innara-primary)]/40
+                          animate-fade-up animate-glow pointer-events-auto"
+                style={{ backgroundColor: "var(--innara-footer)", animationDelay: "180ms" }}
               >
                 Join our Waitlist
               </button>
@@ -128,14 +141,15 @@ export default function Home() {
             >
               {/* Join our Waitlist */}
               <button
-                onClick={scrollToContact}
-                className="inline-flex items-center justify-center rounded-2xl px-5 py-3 text-sm font-semibold text-white shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--innara-primary)]/40 animate-fade-up animate-glow" style={{ backgroundColor: "var(--innara-footer)", animationDelay: "180ms", }}
+                type="button"
+                onClick={() => { console.log('hero waitlist clicked'); scrollToSection('contact'); }}
+                className="inline-flex items-center justify-center rounded-2xl px-5 py-3 text-sm font-semibold text-white shadow-sm transition-colors"
+                style={{ backgroundColor: "var(--innara-footer)" }}
               >
                 Join our Waitlist
               </button>
-
               <button
-                onClick={scrollToPlans}
+                onClick={() => scrollToSection("plans")}
                 className="relative z-50 inline-flex items-center justify-center rounded-2xl border border-[var(--innara-primary)] 
                           px-5 py-3 text-sm font-semibold text-[var(--innara-primary)] transition-all duration-200 
                           hover:bg-[var(--innara-secondary)] hover:text-white hover:border-[var(--innara-secondary)]"
@@ -513,19 +527,7 @@ export default function Home() {
               ))}
             </div>
           </div>
-          <form className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm grid grid-cols-1 gap-4">
-            <div>
-              <label className="text-sm font-medium text-slate-700">Name</label>
-              <input className="mt-1 w-full rounded-xl border border-slate-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[color:var(--innara-primary)]/30" placeholder="Your name" />
-            </div>
-            <div>
-              <label className="text-sm font-medium text-slate-700">Email</label>
-              <input type="email" className="mt-1 w-full rounded-xl border border-slate-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[color:var(--innara-primary)]/30" placeholder="you@example.com" />
-            </div>  
-            <div className="pt-2">
-              <button className="inline-flex items-center justify-center rounded-2xl bg-[var(--innara-primary)] px-5 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:brightness-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--innara-primary)]/40 w-full md:w-auto">Join Mealistik Community</button>
-            </div>
-          </form>
+          <div className="launchlist-widget" data-key-id="uUxEhu" data-height="180px"></div>
         </div>
         {/* Wave divider at bottom (into footer bg) */}
         <div className="absolute bottom-0 left-0 right-0">

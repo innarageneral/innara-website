@@ -1,5 +1,6 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import Head from "next/head";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -21,6 +22,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <head>
         <link rel="icon" href="/favicon.svg"/>
+        <script src="https://getlaunchlist.com/js/widget.js" defer></script>
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased max-w-full overflow-x-hidden font-sans text-slate-800 bg-white`}
