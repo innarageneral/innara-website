@@ -30,21 +30,18 @@ function ScrollProgress() {
   );
 }
 
+
 export default function Home() {
   const [hoveredStep, setHoveredStep] = useState(null);
 
-  // inside the Home component, before return(...)
-  const scrollToPlans = (e) => {
-    if (e) e.preventDefault(); // keep keyboard/anchor semantics but stop instant jump
-    const el = document.getElementById("plans");
-    if (!el) return;
-    const header = document.querySelector("header");
-    const headerHeight = header ? header.getBoundingClientRect().height : 0;
-    const top = el.getBoundingClientRect().top + window.scrollY - headerHeight - 12; // 12px cushion
-    window.scrollTo({ top, behavior: "smooth" });
+  const scrollToContact = () => {
+    document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
   };
 
-
+  const scrollToPlans = () => {
+    document.getElementById("plans")?.scrollIntoView({ behavior: "smooth" });
+  };
+  
   return (
     <div className="min-h-screen bg-white">
       <ScrollProgress />
@@ -90,11 +87,8 @@ export default function Home() {
             </nav>
             <div className="flex items-center gap-3">
               <button
-                className="inline-flex items-center justify-center rounded-2xl px-5 py-3 text-sm font-semibold text-white shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--innara-primary)]/40 animate-fade-up animate-glow"
-                style={{
-                  backgroundColor: "var(--innara-footer)",
-                  animationDelay: "180ms",
-                }}
+                onClick={scrollToContact}
+                className="inline-flex items-center justify-center rounded-2xl px-5 py-3 text-sm font-semibold text-white shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--innara-primary)]/40 animate-fade-up animate-glow" style={{ backgroundColor: "var(--innara-footer)", animationDelay: "180ms", }}
               >
                 Join our Waitlist
               </button>
@@ -132,21 +126,22 @@ export default function Home() {
               className="mt-8 flex items-center justify-center md:justify-start gap-3 animate-fade-up"
               style={{ animationDelay: "260ms" }}
             >
-              <a
-                href="#download"
-                className="inline-flex items-center justify-center rounded-2xl px-5 py-3 text-sm font-semibold shadow-sm transition-transform hover:-translate-y-0.5 hover:brightness-90"
-                style={{ backgroundColor: "#2E1A47", color: "#FFFFFF" }}
+              {/* Join our Waitlist */}
+              <button
+                onClick={scrollToContact}
+                className="inline-flex items-center justify-center rounded-2xl px-5 py-3 text-sm font-semibold text-white shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--innara-primary)]/40 animate-fade-up animate-glow" style={{ backgroundColor: "var(--innara-footer)", animationDelay: "180ms", }}
               >
                 Join our Waitlist
-                <span className="ml-2">➜</span>
-              </a>
-              <a
-                href="#plans"
-                className="relative z-50 inline-flex items-center justify-center rounded-2xl border border-[var(--innara-primary)] px-5 py-3 text-sm font-semibold text-[var(--innara-primary)] transition-all duration-200 hover:bg-[#9999CC] hover:text-white hover:border-[#9999CC]"
+              </button>
+
+              <button
+                onClick={scrollToPlans}
+                className="relative z-50 inline-flex items-center justify-center rounded-2xl border border-[var(--innara-primary)] 
+                          px-5 py-3 text-sm font-semibold text-[var(--innara-primary)] transition-all duration-200 
+                          hover:bg-[var(--innara-secondary)] hover:text-white hover:border-[var(--innara-secondary)]"
               >
-                See How It Works
-                <span className="ml-2">➜</span>
-              </a>
+                See How it Works <span className="ml-2">➜</span>
+              </button>
             </div>
           </div>
 
@@ -298,7 +293,7 @@ export default function Home() {
               desc: "Personalized meals built for real life and real health specifically designed to support PCOS, thyroid, diabetes, and other chronic conditions.",
               points: [
                 "Swap meals as often as you like", 
-                "Recipes for every cooking skill level, whether you&apos;re a beginner or a pro", 
+                "Recipes for every cooking skill level, whether you're a beginner or a pro", 
                 "Condition-friendly options that fit your needs"
               ],
             },
@@ -313,7 +308,7 @@ export default function Home() {
             },
             {
               title: "Daily Check-Ins",
-              desc: "Stay consistent with gentle, guilt-free guidance. We&apos;re always here, even when you need to bounce back.",
+              desc: "Stay consistent with gentle, guilt-free guidance. We're always here, even when you need to bounce back.",
               points: [
                 "Quick daily meal & mood check-ins",
                 "Supportive reminders that keep you on track",
