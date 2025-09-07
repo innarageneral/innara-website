@@ -144,14 +144,11 @@ export default function Home() {
               <button
                 type="button"
                 onClick={() => scrollToSection("contact")}
-                className="inline-flex items-center justify-center rounded-2xl px-5 py-3 text-sm font-semibold text-white shadow-sm transition-colors
-                          focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--innara-primary)]/40
-                          animate-fade-up animate-glow pointer-events-auto"
-                style={{ backgroundColor: "var(--innara-footer)", animationDelay: "180ms" }}
+                className="relative z-[999] pointer-events-auto inline-flex items-center justify-center rounded-2xl px-5 py-3 text-sm font-semibold text-white shadow-sm transition-colors"
+                style={{ backgroundColor: "var(--innara-footer)" }}
               >
                 Join our Waitlist
               </button>
-
               <button
                 onClick={() => scrollToSection("plans")}
                 className="relative z-50 inline-flex items-center justify-center rounded-2xl border border-[var(--innara-primary)] 
@@ -501,7 +498,7 @@ export default function Home() {
           </svg>
         </div>
         <div className="text-center mb-10">
-          <h2 className="text-2xl sm:text-3xl font-semibold text-slate-900">Join the Mealistik Community</h2>
+          <h2 className="text-2xl sm:text-3xl font-semibold text-slate-900">Join our Waitlist</h2>
           <p className="mt-2 text-slate-600">Stay connected with the latest in hormone-friendly nutrition and app updates.</p>
         </div>
         <div className="grid md:grid-cols-2 gap-8">
@@ -532,8 +529,10 @@ export default function Home() {
               ))}
             </div>
           </div>
-          <div className="launchlist-widget" data-key-id="uUxEhu" data-height="180px"></div>
-        </div>
+            <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+              <div className="launchlist-widget" data-key-id="uUxEhu" data-height="180px"></div>
+            </div>
+          </div>
         {/* Wave divider at bottom (into footer bg) */}
         <div className="absolute bottom-0 left-0 right-0">
           <svg
