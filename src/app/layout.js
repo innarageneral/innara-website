@@ -19,7 +19,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" data-scroll-behavior="smooth" className="scroll-smooth">
       <head>
         <link rel="icon" href="/favicon.svg"/>
         <script src="https://getlaunchlist.com/js/widget.js" defer></script>

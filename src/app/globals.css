@@ -38,3 +38,13 @@
               radial-gradient(45% 45% at 70% 30%, #c4b5fd 0%, rgba(196,181,253,.0) 60%),
               radial-gradient(40% 40% at 30% 20%, #f0abfc 0%, rgba(240,171,252,.0) 60%);
 }
+
+html {
+  scroll-behavior: smooth;     /* Enables smooth scrolling effect */
+  height: auto;                /* Prevents full page override issues */
+  overflow-y: auto;
+}
+body {
+  min-height: 100vh;
+  overflow: visible;
+}

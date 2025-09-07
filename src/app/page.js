@@ -34,14 +34,6 @@ function ScrollProgress() {
 export default function Home() {
   const [hoveredStep, setHoveredStep] = useState(null);
 
-  const scrollToContact = () => {
-    document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
-  };
-
-  const scrollToPlans = () => {
-    document.getElementById("plans")?.scrollIntoView({ behavior: "smooth" });
-  };
-
   const scrollToSection = useCallback((id) => {
     const headerOffset = 80; // adjust based on your navbar height
     const el = document.getElementById(id);
