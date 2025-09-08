@@ -520,10 +520,8 @@ export default function Home() {
                 </div>
               ))}
             </div>
-          </div>
-            <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-              <div className="launchlist-widget" data-key-id="uUxEhu" data-height="180px"></div>
-            </div>
+          </div>g
+            <div className="launchlist-widget" data-key-id="uUxEhu" data-height="180px"></div>
           </div>
         {/* Wave divider at bottom (into footer bg) */}
         <div className="absolute bottom-0 left-0 right-0">
