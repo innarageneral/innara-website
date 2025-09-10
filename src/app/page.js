@@ -1,3 +1,5 @@
+// all the buttons work , need to fix a little UX
+
 // the code works alsong with firebase but bad ux 
 
 "use client";
@@ -180,9 +182,9 @@ export default function Home() {
           </div>
         </div>
         <div className="absolute bottom-0 left-0 right-0">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" className="w-full h-20 sm:h-32 text-white" preserveAspectRatio="none">
+         {/*<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" className="w-full h-20 sm:h-32 text-white" preserveAspectRatio="none">
             <path fill="currentColor" fillOpacity="1" d="M0,224L48,213.3C96,203,192,181,288,176C384,171,480,181,576,202.7C672,224,768,256,864,256C960,256,1056,224,1152,197.3C1248,171,1344,149,1392,138.7L1440,128L1440,320L0,320Z"/>
-          </svg>
+          </svg> */}
         </div>
       </section>
 
