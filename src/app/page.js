@@ -428,7 +428,7 @@ export default function Home() {
 
         <div className="grid md:grid-cols-2 gap-8">
           {/* left column info cards */}
-          <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+          <div className="order-2 md:order-1 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
             <h3 className="text-lg font-semibold text-slate-900">Get Connected</h3>
             <div className="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-4">
               {[
@@ -448,7 +448,7 @@ export default function Home() {
           </div>
 
           {/* 🔹 Right column: Firebase form */}
-          <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+          <div className="order-1 md:order-2 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
             <h3 className="text-lg font-semibold text-slate-900 mb-3">Join the list</h3>
 
             <form onSubmit={handleJoinWaitlist} className="space-y-3">
