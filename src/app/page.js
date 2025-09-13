@@ -447,7 +447,7 @@ export default function Home() {
             </div>
           </div>
 
-          {/* 🔹 Right column: Firebase form */}
+          {/* Right column: Firebase form */}
           <div className="order-1 md:order-2 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
             <h3 className="text-lg font-semibold text-slate-900 mb-3">Join the list</h3>
 
