@@ -47,6 +47,7 @@ export default function Home() {
   const [wlLoading, setWlLoading] = useState(false);
   const [wlSuccess, setWlSuccess] = useState(false);
   const [wlError, setWlError] = useState("");
+  const [wlCondition, setWlCondition] = useState("");
 
   async function handleJoinWaitlist(e) {
     e.preventDefault();
@@ -60,8 +61,9 @@ export default function Home() {
       }
 
       await addDoc(collection(db, "waitlist"), {
-        name: wlName?.trim() || null,
+        name: wlName?.trim(),
         email: wlEmail.toLowerCase(),
+        condition: wlCondition || null,
         createdAt: serverTimestamp(),
       });
 
@@ -176,7 +178,7 @@ export default function Home() {
                 fill
                 className="object-contain drop-shadow-xl"
                 priority
-                quality={90}
+                quality={100}
               />
             </motion.div>
           </div>
@@ -453,27 +455,52 @@ export default function Home() {
 
             <form onSubmit={handleJoinWaitlist} className="space-y-3">
               <div className="grid sm:grid-cols-2 gap-3">
+                {/* Name (required) */}
                 <input
                   type="text"
                   value={wlName}
                   onChange={(e) => setWlName(e.target.value)}
-                  placeholder="Your name (optional)"
-                  className="w-full rounded-lg border border-slate-200 px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--innara-primary)]"
+                  required
+                  placeholder="Your name"
+                  className="w-full rounded-lg border border-slate-200 px-4 py-2 text-sm 
+                            focus:outline-none focus:ring-2 focus:ring-[var(--innara-primary)]"
                 />
+
+                {/* Email (required) */}
                 <input
                   type="email"
                   value={wlEmail}
                   onChange={(e) => setWlEmail(e.target.value)}
                   required
                   placeholder="Email address"
-                  className="w-full rounded-lg border border-slate-200 px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--innara-primary)]"
+                  className="w-full rounded-lg border border-slate-200 px-4 py-2 text-sm 
+                            focus:outline-none focus:ring-2 focus:ring-[var(--innara-primary)]"
                 />
               </div>
 
+              {/* Condition (required) */}
+              <select
+                value={wlCondition}
+                onChange={(e) => setWlCondition(e.target.value)}
+                required
+                className="w-full rounded-lg border border-slate-200 px-4 py-2 text-sm 
+                          focus:outline-none focus:ring-2 focus:ring-[var(--innara-primary)] bg-white"
+              >
+                <option value="" disabled>
+                  Select your condition
+                </option>
+                <option value="pcos">PCOS</option>
+                <option value="thyroid">Thyroid</option>
+                <option value="diabetes">Diabetes</option>
+                <option value="other">Other</option>
+              </select>
+
+              {/* Submit */}
               <button
                 type="submit"
                 disabled={wlLoading}
-                className="inline-flex items-center justify-center rounded-2xl px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors disabled:opacity-70"
+                className="inline-flex items-center justify-center rounded-2xl px-5 py-2.5 text-sm 
+                          font-semibold text-white shadow-sm transition-colors disabled:opacity-70"
                 style={{ backgroundColor: "var(--innara-footer)" }}
               >
                 {wlLoading ? "Adding…" : "Join Waitlist"}
