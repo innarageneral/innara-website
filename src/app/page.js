@@ -6,12 +6,8 @@ import { useState, useCallback } from "react";
 import React, { useRef, useEffect } from "react";
 import { Send, MessageCircle, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
-// 🔹 Icons (lucide-react)
 import { Heart, Sparkles, Crown, Check } from "lucide-react";
-
-// 🔹 UI Button (shadcn or your own component)
-import { Button } from "@/components/ui/button"; // update path if different
-
+import { Button } from "@/components/ui/button"; 
 
 // 🔹 Firebase (Firestore)
 import { db } from "../lib/firebase"; // path: src/lib/firebase.js
@@ -155,7 +151,7 @@ export default function Home() {
   const [hippoMessages, setHippoMessages] = useState([
     {
       id: 'init',
-      text: "Hi — I'm Hippo 🦛. I help with hormone-smart meal planning. Tell me what you eat, your goals, or what phase of your cycle you're in, and I’ll give step-by-step guidance.",
+      text: "Hi, I'm Hippo. I help with hormone-smart meal planning. Tell me what you eat, your goals, or what phase of your cycle you're in, and I’ll give step-by-step guidance.",
       sender: 'bot',
       timestamp: new Date().toISOString(),
     },
@@ -888,7 +884,7 @@ export default function Home() {
             size="icon"
           >
             <MessageCircle className="h-6 w-6 text-white" />
-            <Sparkles className="h-4 w-4 text-white absolute -top-1 -right-1 animate-pulse" />
+            <Sparkles className="h-4 w-4 text-[var(--innara-primary)] absolute -top-1 -right-1" />
           </Button>
         )}
       </div>
@@ -901,10 +897,10 @@ export default function Home() {
             <div className="bg-[var(--innara-primary)] text-white p-4 flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="h-10 w-10 rounded-full bg-white/20 flex items-center justify-center">
-                  <Sparkles className="h-5 w-5" />
+                  <Image src="/icons/hippo-mascot.png" alt="Hippo" width={30} height={30} />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-sm">Hippo — your meal buddy</h3>
+                  <h3 className="font-semibold text-sm">Hippo</h3>
                   <p className="text-xs opacity-90">Practical, cycle-aware meal plans</p>
                 </div>
               </div>
@@ -946,7 +942,7 @@ export default function Home() {
                   onChange={(e) => setHippoInput(e.target.value)}
                   onKeyDown={handleHippoKey}
                   placeholder="Ask Hippo about meal planning..."
-                  className="flex-1 rounded-full border-[var(--innara-footer)]/10"
+                  className="flex-1 rounded-full bg-white border-[var(--innara-footer)]/10"
                 />
                 <Button onClick={handleHippoSend} size="icon" disabled={!hippoInput.trim() || hippoTyping} className="bg-[var(--innara-primary)] text-white rounded-full">
                   <Send className="h-4 w-4" />
