@@ -51,7 +51,7 @@ export default function Home() {
       "Budget and location-based suggestions",
     ],
     priceMonthly: 22.99,
-    priceAnnual: 229.99,
+    priceAnnual: 249.99,
     popular: true,
   };
 
@@ -807,7 +807,7 @@ export default function Home() {
               <div className="font-semibold text-white">Company</div>
               <ul className="mt-3 space-y-2 text-sm text-slate-300">
                 <li><a href="#about" className="hover:text-[var(--innara-surface)] transition">About</a></li>
-                <li><a href="#contact" className="hover:text-[var(--innara-surface)] transition">Contact</a></li>
+                <li><a href="/contact" className="hover:text-[var(--innara-surface)] transition">Contact</a></li>
               </ul>
             </div>
           </div>
