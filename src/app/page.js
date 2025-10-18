@@ -8,7 +8,6 @@ import { Send, MessageCircle, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Heart, Sparkles, Crown, Check } from "lucide-react";
 import { Button } from "@/components/ui/button"; 
-import { Subscription } from "@/components/Subscription";
 
 // 🔹 Firebase (Firestore)
 import { db } from "../lib/firebase"; // path: src/lib/firebase.js
