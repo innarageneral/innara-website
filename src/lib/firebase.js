@@ -11,7 +11,7 @@ const firebaseConfig = {
   apiKey: "AIzaSyAPb5kIqo50UoYeipMK0sPQycqC6qCLBy0",
   authDomain: "website-database-a78d5.firebaseapp.com",
   projectId: "website-database-a78d5",
-  storageBucket: "website-database-a78d5.appspot.com", // fixed storageBucket format
+  storageBucket: "website-database-a78d5.appspot.com",
   messagingSenderId: "113963737146",
   appId: "1:113963737146:web:a459aed0516fdc033e1503",
   measurementId: "G-1JX4GCC0D4",

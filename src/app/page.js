@@ -1,31 +1,93 @@
+// app/page.js
 "use client";
 
+import Image from 'next/image';
 import { motion, useScroll } from "framer-motion";
-import Image from "next/image";
-import { useState, useCallback } from "react";
-import React, { useRef, useEffect } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import { Send, MessageCircle, X } from "lucide-react";
-import { Input } from "@/components/ui/input";
-import { Heart, Sparkles, Crown, Check } from "lucide-react";
-import { Button } from "@/components/ui/button"; 
-import { Subscription } from "@/components/Subscription";
+import { Heart, Crown, Check } from "lucide-react";
 
 // 🔹 Firebase (Firestore)
 import { db } from "../lib/firebase"; // path: src/lib/firebase.js
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 
+/* ===== Helpers ===== */
 // Scroll progress bar at the top
 function ScrollProgress() {
   const { scrollYProgress } = useScroll();
   return (
     <motion.div
       style={{ scaleX: scrollYProgress, transformOrigin: "0 0" }}
-      className="fixed left-0 top-0 h-1 w-full bg-[var(--innara-primary)] z-50"
+      className="fixed left-0 top-0 h-1 w-full bg-[var(--ml-primary)] z-50"
     />
   );
 }
 
-export default function Home() {
+// Animated number that counts up when scrolled into view
+function AnimatedNumber({ value, duration = 1400, suffix = "", className = "" }) {
+  const elRef = useRef(null);
+  const [inView, setInView] = useState(false);
+  const [display, setDisplay] = useState(0);
+
+  useEffect(() => {
+    const el = elRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setInView(true);
+          io.disconnect();
+        }
+      },
+      { threshold: 0.35 }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!inView) return;
+    let start = 0;
+    const startTs = performance.now();
+    function tick(now) {
+      const p = Math.min((now - startTs) / duration, 1);
+      const eased = 1 - Math.pow(1 - p, 3); // easeOutCubic
+      const next = Math.floor(eased * value);
+      if (next !== start) {
+        setDisplay(next);
+        start = next;
+      }
+      if (p < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }, [inView, value, duration]);
+
+  return (
+    <span ref={elRef} className={className}>
+      {display.toLocaleString()} {suffix}
+    </span>
+  );
+}
+
+function StatCard({ icon, number, suffix = "", subtitle, description }) {
+  return (
+    <div className="group flex flex-col items-center text-center max-w-sm mx-auto rounded-2xl">
+      <div className="relative h-24 w-24 rounded-full bg-[var(--ml-accent)]/60 grid place-content-center shadow-sm group-hover:scale-105 transition">
+        <Image src={icon} alt={subtitle} width={56} height={56} className="object-contain" />
+      </div>
+      {typeof number === 'number' ? (
+        <AnimatedNumber value={number} suffix={suffix} className="mt-5 text-3xl sm:text-4xl font-bold text-slate-900" />
+      ) : (
+        <div className="text-3xl font-bold text-slate-900">{number}</div>
+      )}
+      <p className="mt-4 text-l font-semibold text-slate-900">{subtitle}</p>
+      <p className="mt-2 text-sm text-slate-600">{description}</p>
+    </div>
+  );
+}
+
+export default function Page() {
+  const howItWorksRef = useRef(null);
   const [hoveredStep, setHoveredStep] = useState(null);
 
   const scrollToSection = useCallback((id) => {
@@ -163,54 +225,43 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <main className="bg-white min-h-screen">
       <ScrollProgress />
 
-      {/* Navbar */}
-      <header className="sticky top-0 z-30 bg-white/90 backdrop-blur border-b border-slate-100">
-        <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex items-center justify-between">
-            <div
-              className="text-xl font-bold text-[var(--innara-primary)] animate-fade-up"
-              style={{ animationDelay: "50ms" }}
+      {/* NAV */}
+      <header className="sticky top-0 z-30 bg-white/90 backdrop-blur border-b border-[var(--ml-secondary)]/40">
+        <div className="mx-auto max-w-7xl px-4 md:px-6 lg:px-8 py-4 flex items-center justify-between">
+          <a href="/" className="flex items-center gap-2" aria-label="Mealistik home">
+            <Image src="/word-logo.png" alt="Mealistik Logo" width={150} height={40} className="rounded-full"/>
+          </a>
+
+          <nav className="hidden md:flex items-center gap-6 text-sm animate-fade-up">
+            <a href="#features" className="hover:text-[var(--ml-primary)] link-underline">Features</a>
+            <a href="#how" className="hover:text-[var(--ml-primary)] link-underline">How it Works</a>
+            <a href="#plans" className="hover:text-[var(--ml-primary)] link-underline">Plans</a>
+            <a href="#newsletter" className="hover:text-[var(--ml-primary)] link-underline">Newsletter</a>
+          </nav>
+
+          <div className="flex items-center gap-3">
+            <a
+              href="#waitlist"
+              className="inline-flex items-center justify-center rounded-2xl px-5 py-3 text-sm font-semibold text-white shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--ml-primary)]/40 animate-fade-up animate-glow pointer-events-auto" style={{ backgroundColor: "var(--ml-primary)", animationDelay: "180ms"}}
             >
-              Mealistik
-            </div>
-            <nav
-              className="hidden md:flex items-center gap-6 text-sm text-slate-700 animate-fade-up"
-              style={{ animationDelay: "120ms" }}
-            >
-              <a className="hover:text-[var(--innara-primary)] link-underline" href="#about">About</a>
-              <a className="hover:text-[var(--innara-primary)] link-underline" href="#features">Features</a>
-              <a className="hover:text-[var(--innara-primary)] link-underline" href="#plans">Plans</a>
-              <a className="hover:text-[var(--innara-primary)] link-underline" href="#contact">Contact</a>
-            </nav>
-            <div className="flex items-center gap-3">
-              <button
-                type="button"
-                onClick={() => scrollToSection("contact")}
-                className="inline-flex items-center justify-center rounded-2xl px-5 py-3 text-sm font-semibold text-white shadow-sm transition-colors
-                           focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--innara-primary)]/40
-                           animate-fade-up animate-glow pointer-events-auto"
-                style={{ backgroundColor: "var(--innara-footer)", animationDelay: "180ms" }}
-              >
-                Join our Waitlist
-              </button>
-            </div>
+              Join the Waitlist
+            </a>
           </div>
         </div>
       </header>
 
       {/* Hero */}
-      <section className="relative overflow-hidden mx-auto w-full max-w-7xl p-[40px] sm:p-[60px] lg:p-[75px] py-8 sm:py-10 bg-gradient-to-l from-[#CCCCFF] to-white">
+      <section className="relative overflow-hidden mx-auto w-full max-w-7xl p-[40px] sm:p-[60px] lg:p-[75px] py-8 sm:py-10">
+        {/* gradient accent */}
+        <div className="gradient-blob" style={{ top: 10, right: 0 }} />
         <div className="grid md:grid-cols-2 gap-6 items-center">
           {/* Text column */}
           <div className="text-center md:text-left max-w-3xl md:max-w-xl mx-auto md:mx-0">
-            <p
-              className="inline-block text-xs tracking-wide uppercase text-white bg-[linear-gradient(90deg,#7A69AF,#9B8BD1,#7A69AF)] rounded-full px-3 py-1 mb-5 animate-fade-up border border-[var(--innara-primary)]"
-              style={{ animationDelay: "80ms" }}
-            >
-              New: Hormone-Smart Meal Planning App
+            <p className="inline-flex items-center gap-2 text-[var(--ml-primary)] bg-[var(--ml-accent)]/50 rounded-full px-3 py-1 text-xs font-medium mb-5">
+              <Sparkles className="h-4 w-4" /> Supportive &amp; Simple • For Real Lives
             </p>
             <h1
               className="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900 animate-fade-up"
@@ -230,22 +281,61 @@ export default function Home() {
               className="mt-8 flex items-center justify-center md:justify-start gap-3 animate-fade-up"
               style={{ animationDelay: "260ms" }}
             >
-              <button
-                type="button"
-                onClick={() => scrollToSection("contact")}
-                className="relative z-[999] pointer-events-auto inline-flex items-center justify-center rounded-2xl px-5 py-3 text-sm font-semibold text-white shadow-sm transition-colors"
-                style={{ backgroundColor: "var(--innara-footer)" }}
+             <a
+                href="#waitlist"
+                className="inline-flex items-center justify-center rounded-2xl px-5 py-3 text-sm font-semibold text-white shadow-sm" style={{ backgroundColor: "var(--ml-primary)", animationDelay: "180ms"}}
               >
-                Join our Waitlist
-              </button>
-              <button
-                onClick={() => scrollToSection("plans")}
-                className="relative z-50 inline-flex items-center justify-center rounded-2xl border border-[var(--innara-primary)]
-                           px-5 py-3 text-sm font-semibold text-[var(--innara-primary)] transition-all duration-200
-                           hover:bg-[var(--innara-secondary)] hover:text-white hover:border-[var(--innara-secondary)]"
+                Join the Waitlist
+              </a>
+              <a
+                href="#how"
+                className="inline-flex items-center justify-center rounded-2xl border border-[var(--ml-secondary)] px-5 py-3 text-sm font-semibold hover:bg-[var(--ml-accent)]/30 transition"
               >
-                See How it Works <span className="ml-2">➜</span>
-              </button>
+                <PlayIcon className="h-4 w-4" />
+                See How It Works
+              </a>
+            </div>
+            {/* Community Avatars Section with Custom Purple Tint */}
+            <div className="mt-6 flex items-center space-x-4">
+              {/* Avatars */}
+              <div className="flex -space-x-3">
+                {[
+                  "/avatars/avatar-1.jpg",
+                  "/avatars/avatar-2.jpg",
+                  "/avatars/avatar-3.jpg",
+                  "/avatars/avatar-4.jpg",
+                ].map((src, idx) => (
+                  <div key={idx} className="relative w-10 h-10 rounded-full border-2 border-white shadow-sm overflow-hidden">
+                    <img
+                      src={src}
+                      alt="Community member"
+                      className="w-10 h-10 rounded-full object-cover"
+                    />
+                    {/* Purple tint overlay */}
+                    <div
+                      className="absolute inset-0 rounded-full pointer-events-none"
+                      style={{ backgroundColor: "#9999CC", opacity: 0.2 }}
+                    ></div>
+                  </div>
+                ))}
+
+                {/* The "+200" circle */}
+                <div
+                  className="relative w-10 h-10 rounded-full flex items-center justify-center text-xs font-medium border-2 border-white shadow-sm"
+                  style={{ backgroundColor: "var(--ml-accent)", color: "var(--ml-primary)" }}
+                >
+                  +200
+                  <div
+                    className="absolute inset-0 rounded-full pointer-events-none"
+                    style={{ backgroundColor: "#9999CC", opacity: 0.2 }}
+                  ></div>
+                </div>
+              </div>
+
+              {/* Caption */}
+              <p className="text-sm text-slate-600 max-w-xs">
+                Join <strong>200+ women</strong> embracing a hormone-smart approach to food and wellness.
+              </p>
             </div>
           </div>
 
@@ -268,50 +358,37 @@ export default function Home() {
             </motion.div>
           </div>
         </div>
-        <div className="absolute bottom-0 left-0 right-0">
-         {/*<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" className="w-full h-20 sm:h-32 text-white" preserveAspectRatio="none">
-            <path fill="currentColor" fillOpacity="1" d="M0,224L48,213.3C96,203,192,181,288,176C384,171,480,181,576,202.7C672,224,768,256,864,256C960,256,1056,224,1152,197.3C1248,171,1344,149,1392,138.7L1440,128L1440,320L0,320Z"/>
-          </svg> */}
-        </div>
       </section>
 
       {/* Stats */}
-      <section className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-16 sm:py-20 bg-white">
-        <div className="h-0.5 w-full bg-[var(--innara-primary)]/50 mb-12" />
+      <section className="relative mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-10 sm:py-12 bg-white">
         <div className="grid sm:grid-cols-3 gap-10 text-center">
-          {[
-            {
-              title: "100+",
-              subtitle: "Early Access Members",
-              description: "Be part of the first wave to experience Mealistik and help shape its journey.",
-              icon: "/icons/hippo-gift.png",
-            },
-            {
-              title: "280+ Members",
-              subtitle: "Members",
-              description: "Growing Instagram Community.",
-              icon: "/icons/hippo-clock.png",
-            },
-            {
-              title: "Supportive & Simple",
-              subtitle: "For Real Lives",
-              description: "Designed for everyday living, not restrictive diets.",
-              icon: "/icons/hippo-speed.png",
-            },
-          ].map((item) => (
-            <div key={item.title} className="flex flex-col items-center text-center max-w-sm">
-              <Image src={item.icon} alt={item.title} width={96} height={96} className="object-contain mb-4" />
-              <h3 className="text-2xl font-bold mb-5">{item.title}</h3>
-              <p className="text-l text-gray-800">{item.subtitle}</p>
-              <p className="text-sm text-gray-500 mt-2">{item.description}</p>
-            </div>
-          ))}
+          <StatCard
+            icon="/icons/hippo-gift.png"
+            number={200}
+            suffix="+"
+            subtitle="Early Signups"
+            description={"Join the Growing Community"}
+          />
+          <StatCard
+            icon="/icons/hippo-clock.png"
+            number={280}
+            suffix="+"
+            subtitle="Members"
+            description={"Growing Instagram Commmunity"}
+          />
+          <StatCard
+            icon="/icons/hippo-speed.png"
+            number={24}
+            suffix="/ 7"
+            subtitle="Support"
+            description={"Always there when you need us"}
+          />
         </div>
-        <div className="h-0.5 w-full bg-[var(--innara-primary)]/50 mt-12" />
       </section>
 
       {/* About */}
-      <section id="about" className="mx-auto w-full max-w-7xl p-[40px] sm:px-[60px] lg:px-[75px] py-16 sm:py-20">
+      <section id="about" className="relative mx-auto w-full max-w-7xl p-[40px] sm:p-[60px] lg:p-[75px] py-8 sm:py-10">
         <div className="grid md:grid-cols-2 gap-6 items-center">
           <motion.div
             initial={{ x: -50, opacity: 0 }}
@@ -348,295 +425,339 @@ export default function Home() {
           </motion.div>
           <div className="flex justify-center">
             <div className="relative w-36 sm:w-40 md:w-44 lg:w-48 aspect-[9/19] rounded-[1.5rem] border-4 border-slate-900/90 bg-slate-100 shadow-lg overflow-hidden">
-              <Image src="/app-mock.png" alt="Innara app screen" fill className="object-cover" priority />
+              <Image src="/home-screen.png" alt="Mealistik app screen" fill className="object-cover" priority />
             </div>
           </div>
         </div>
       </section>
 
-      {/* Features */}
-      <section id="features" className="relative bg-white px-6 lg:px-12 py-20 bg-gradient-to-l from-white to-[#CCCCFF]">
-        <div className="max-w-6xl mx-auto text-center">
-          <h2 className="text-2xl sm:text-3xl font-semibold">Features that support your journey</h2>
-          <p className="mt-3 text-slate-600">
-            Mealistik combines cutting-edge nutrition science with intuitive design
-            to give you the tools you need for hormonal health success.
-          </p>
+      {/* REPLACE the entire How section block with this */}
+      <section id="how" className="relative p-[40px] sm:p-[60px] lg:p-[75px] py-8 sm:py-10">
+        <h2 className="text-2xl md:text-3xl font-semibold tracking-tight">How it works</h2>
+        <p className="mt-2 text-slate-600 max-w-2xl">
+          Three simple steps—guided by your hormones, preferences, and real life.
+        </p>
+
+        <div className="mt-8 grid md:grid-cols-3 gap-6">
+          {/* Step 1 */}
+          <div className="group glow-card rounded-2xl border border-[var(--ml-secondary)]/40 bg-[var(--ml-accent)]/40 p-6 min-h-[28rem] flex flex-col justify-between transition-transform duration-300 [transform:perspective(800px)] hover:[transform:rotateX(4deg)_rotateY(-4deg)_translateY(-2px)]">
+            <div className="absolute -top-5 -left-3 h-10 w-10 rounded-full bg-white border border-[var(--ml-secondary)] grid place-content-center font-semibold text-[var(--ml-primary)] shadow-sm">1</div>
+            <div>
+              <div className="flex items-center space-x-2 mb-3">
+                <ProfileIcon className="h-6 w-6" />
+                <h3 className="text-lg font-semibold">Tell Us About You</h3>
+              </div>
+              <p className="text-slate-600 mb-4">Your health context, goals, cycle info, tastes, time & budget.</p>
+            </div>
+            <div className="w-full overflow-hidden rounded-lg">
+              <div className="w-full h-full overflow-hidden rounded-lg">
+                <img
+                  src="/profile-survey.png"
+                  alt="Profile Survey"
+                  className="w-full h-full object-cover object-top"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Step 2 */}
+          <div className="group glow-card rounded-2xl border border-[var(--ml-secondary)]/40 bg-[var(--ml-accent)]/40 p-6 min-h-[28rem] flex flex-col justify-between transition-transform duration-300 [transform:perspective(800px)] hover:[transform:rotateX(4deg)_rotateY(-4deg)_translateY(-2px)]">
+            <div className="absolute -top-5 -left-3 h-10 w-10 rounded-full bg-white border border-[var(--ml-secondary)] grid place-content-center font-semibold text-[var(--ml-primary)] shadow-sm">2</div>
+            <div>
+              <div className="flex items-center space-x-2 mb-3">
+                <CalendarIcon className="h-6 w-6" />
+                <h3 className="text-lg font-semibold">Receive Your Smart Plan</h3>
+              </div>
+              <p className="text-slate-600 mb-4">A weekly plan with flexible swaps and culturally diverse recipes.</p>
+            </div>
+            <div className="w-full overflow-hidden rounded-lg">
+              <div className="w-full h-full overflow-hidden rounded-lg">
+                <img
+                  src="/meal-plan.png"
+                  alt="Meal Plan"
+                  className="w-full h-full object-cover object-top"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Step 3 */}
+          <div className="group glow-card rounded-2xl border border-[var(--ml-secondary)]/40 bg-[var(--ml-accent)]/40 p-6 min-h-[28rem] flex flex-col justify-between transition-transform duration-300 [transform:perspective(800px)] hover:[transform:rotateX(4deg)_rotateY(-4deg)_translateY(-2px)]">
+            <div className="absolute -top-5 -left-3 h-10 w-10 rounded-full bg-white border border-[var(--ml-secondary)] grid place-content-center font-semibold text-[var(--ml-primary)] shadow-sm">3</div>
+            <div>
+              <div className="flex items-center space-x-2 mb-3">
+                <PulseIcon className="h-6 w-6" />
+                <h3 className="text-lg font-semibold">Track & Adapt</h3>
+              </div>
+              <p className="text-slate-600 mb-4">Daily check-ins, gentle feedback, and AI chat (Hippooo) when you need it.</p>
+            </div>
+            <div className="w-full overflow-hidden rounded-lg">
+              <div className="w-full h-full overflow-hidden rounded-lg">
+                <img
+                  src="/track.png"
+                  alt="Check-in"
+                  className="w-full h-full object-cover object-top"
+                />
+              </div>
+            </div>
+          </div>
         </div>
+      </section>
+
+      {/* FEATURES */}
+      <section id="features" className="relative bg-[#FFFFFF] p-[40px] sm:p-[60px] lg:p-[75px] py-8 sm:py-10">
+        <h2 className="text-2xl sm:text-3xl font-semibold">What you’ll get</h2>
+        <p className="mt-2 text-slate-600">
+          Practical tools designed for hormone-smart eating—no guilt, no guesswork.
+        </p>
 
         <div className="mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {[
-            {
-              title: "Smart Meal Plans",
-              desc: "Personalized meals built for real life and real health specifically designed to support PCOS, thyroid, diabetes, and other chronic conditions.",
-              points: [
-                "Swap meals as often as you like",
-                "Recipes for every cooking skill level, whether you're a beginner or a pro",
-                "Condition-friendly options that fit your needs",
-              ],
-            },
-            {
-              title: "Recipe Library",
-              desc: "Discover recipes that are simple, flexible, and tailored to your needs.",
-              points: [
-                "Quick & easy meals for busy days",
-                "Personalized suggestions based on your health goals",
-                "Recipes inspired by multiple cultures and cuisines",
-              ],
-            },
-            {
-              title: "Daily Check-Ins",
-              desc: "Stay consistent with gentle, guilt-free guidance. We're always here, even when you need to bounce back.",
-              points: [
-                "Quick daily meal & mood check-ins",
-                "Supportive reminders that keep you on track",
-                "Encouragement without judgment",
-              ],
-            },
-            {
-              title: "Progress Dashboard",
-              desc: "A simple way to see how your nutrition is supporting your health.",
-              points: [
-                "Track your meals and energy levels",
-                "Notice trends across your cycle",
-                "Celebrate small wins",
-              ],
-            },
-            {
-              title: "Grocery Planning",
-              desc: "Turn your meal plan into a simple shopping experience.",
-              points: [
-                "Auto-generated grocery lists",
-                "Ingredient swaps to match preferences",
-                "Organized lists for easy shopping",
-              ],
-            },
-            {
-              title: "AI Nutrition Chatbot",
-              desc: "Your 24/7 supportive food companion. We're always here to guide you without judgment.",
-              points: [
-                "Ask questions about meals & nutrients anytime",
-                "Get body-synced advice instantly",
-                "Receive reminders tailored to your goals",
-                "Even ask “Can I eat KFC or Maccas today?”—our Hippooo will make it work for you",
-              ],
-            },
-          ].map((f, i) => (
-            <div key={i} className="group [perspective:800px] animate-fade-up" style={{ animationDelay: `${i * 80}ms` }}>
-              <div className="h-full rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition-transform duration-300 group-hover:[transform:rotateX(6deg)_rotateY(-6deg)_translateY(-2px)] hover:shadow-md flex flex-col">
-                <div className="h-8 w-8 rounded-full bg-[#9999CC]/20 text-[#9999CC] grid place-content-center mb-4">★</div>
-                <h3 className="text-lg font-semibold">{f.title}</h3>
-                <p className="mt-2 text-sm text-slate-600">{f.desc}</p>
-                <ul className="mt-4 space-y-1 text-sm text-slate-600 list-disc pl-5 flex-1">
-                  {f.points.map((p, j) => <li key={j}>{p}</li>)}
-                </ul>
-                <div className="pt-2" />
-              </div>
-            </div>
-          ))}
-        </div>
+          <FeatureCard
+            icon={<ChecklistIcon className="h-6 w-6" />}
+            title="Smart Meal Plans"
+            text="Weekly plans tailored to your cycle & goals—with simple swaps."
+          />
 
-        <div className="absolute bottom-0 left-0 right-0">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" className="w-full h-20 sm:h-32 text-[#ECECFF]" preserveAspectRatio="none">
-            <path fill="currentColor" d="M0,224L48,213.3C96,203,192,181,288,176C384,171,480,181,576,202.7C672,224,768,256,864,256C960,256,1056,224,1152,197.3C1248,171,1344,149,1392,138.7L1440,128L1440,320L0,320Z"/>
-          </svg>
+          <FeatureCard
+            icon={<BasketIcon className="h-6 w-6" />}
+            title="Auto Grocery Lists"
+            text="One-tap lists, ingredient swaps, and budget-friendly options."
+          />
+
+          <FeatureCard
+            icon={<ChatIcon className="h-6 w-6" />}
+            title="AI Nutrition Chat"
+            text="Ask Hippooo anything—friendly guidance for real-life choices."
+          />
+
+          <FeatureCard
+            icon={<Sparkles className="h-6 w-6" />}
+            title="Daily Check-Ins"
+            text="Log meals, energy, and mood; get gentle, helpful feedback."
+          />
+
+          <FeatureCard
+            icon={<GlobeIcon className="h-6 w-6" />}
+            title="Culturally Diverse"
+            text="Recipe library that celebrates flavors you already love."
+          />
+
+          <FeatureCard
+            icon={<ShieldIcon className="h-6 w-6" />}
+            title="Science-Informed"
+            text="Built with evidence-based nutrition guidance."
+          />
         </div>
       </section>
 
-      {/* Timeline */}
-      <section
-        id="plans"
-        style={{ scrollMarginTop: "88px" }}
-        className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-16 sm:py-20 bg-[var(--innara-surface)]"
-      >
-        <div className="flex justify-center mb-8">
-          <Image src="/icons/hippo-mascot.png" alt="Innara Mascot" width={300} height={300} className="object-contain" />
-        </div>
-        <div className="text-center mb-10">
-          <h2 className="text-2xl sm:text-3xl font-semibold text-slate-900">How Mealistik Works for You</h2>
-          <p className="mt-2 text-slate-600">Getting started is easier than you think. Here&apos;s how Mealistik guides you every step of the way.</p>
+      {/* PLANS TEASER */}
+      <section id="plans" className="relative p-[40px] sm:p-[60px] lg:p-[75px] py-8 sm:py-10">
+        <div className="flex items-center justify-between">
+          <h2 className="text-2xl md:text-3xl font-semibold tracking-tight">Plans (coming soon)</h2>
+          <span className="text-xs uppercase tracking-wide text-[var(--ml-primary)] bg-[var(--ml-accent)] px-2 py-1 rounded-full">
+            Sneak peek
+          </span>
         </div>
 
-        {/* Desktop timeline */}
-        <div className="hidden md:block">
-          <div className="relative flex items-start justify-between">
-            <div className="absolute top-14 left-50 right-50 h-[2px] bg-[var(--innara-primary)] z-0" />
-            {[
-              { n: 1, t: "Tell Mealistik About You", bullets: ["Share your health details so Mealistik knows your needs.", "Set your personal health and fitness goals", "Tell us what foods and flavors you like"] },
-              { n: 2, t: "Get Your Smart Plan", bullets: ["Get a weekly meal plan made just for you.", "See exactly what to shop for, stress-free", "Follow easy tips to cook and prep faster"] },
-              { n: 3, t: "Track & Adapt", bullets: ["Track your meals and progress with ease", "Get simple AI assisted insights on what’s working for you", "Tweak your plan anytime to fit your life"] },
-            ].map((s) => (
-              <div key={s.n} className="flex-1 flex flex-col items-center">
-                <motion.div whileHover={{ scale: 1.08 }} className="relative z-10 h-30 w-30 rounded-full bg-[#FFFFFF] grid place-content-center text-[#7A69AF] text-xl sm:text-2xl lg:text-3xl font-semibold shadow-sm">{s.n}</motion.div>
-                <div className="group [perspective:800px] mt-6 w-full max-w-[220px] rounded-xl border border-slate-200 bg-white shadow-sm p-4 transform transition-transform duration-300 hover:scale-105 hover:[transform:rotateX(6deg)_rotateY(-6deg)_translateY(-2px)]">
-                  <div className="font-semibold text-slate-900 text-center">{s.t}</div>
-                  <ul className="mt-2 text-l text-slate-600 space-y-2 text-left">
-                    {s.bullets.map((b) => <li key={b}>• {b}</li>)}
-                  </ul>
-                </div>
-              </div>
-            ))}
-          </div>
+        <p className="mt-2 text-slate-600 max-w-2xl">
+          Flexible pricing designed to get you started easily—then grow with you.
+        </p>
+
+        <div className="mt-8 grid md:grid-cols-3 gap-6">
+          <PlanTeaser
+            name="Free Trial"
+            note="Try core features"
+            bullets={["Onboarding survey", "1 smart plan", "Basic grocery list"]}
+          />
+          <PlanTeaser
+            highlight
+            name="Monthly"
+            note="Balanced Plan"
+            bullets={["Unlimited plans & swaps", "AI nutrition chat (Hippooo)", "Daily check-ins & insights"]}
+          />
+          <PlanTeaser
+            name="Premium"
+            note="Advanced insights"
+            bullets={["Cycle-aware analytics", "Recipe packs & filters", "Priority updates"]}
+          />
         </div>
 
-        {/* Mobile cards */}
-        <div className="md:hidden space-y-6">
-          {[
-            { n: 1, t: "Tell Mealistik About You", bullets: ["Share your health details so Mealistik knows your needs", "Set your personal health and fitness goals", "Tell us what foods and flavors you like"] },
-            { n: 2, t: "Get Your Smart Plan", bullets: ["Get a weekly meal plan made just for you", "See exactly what to shop for, stress-free", "Follow easy tips to cook and prep faster"] },
-            { n: 3, t: "Track & Adapt", bullets: ["Track your meals and progress with ease", "Get simple insights on what’s working for you", "Tweak your plan anytime to fit your life"] },
-          ].map((s) => (
-            <div key={s.n} className="group [perspective:800px] rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition-transform duration-300 hover:[transform:rotateX(6deg)_rotateY(-6deg)_translateY(-2px)]">
-              <div className="flex items-center gap-3">
-                <div className="h-10 w-10 rounded-full bg-[var(--innara-surface)] text-[var(--innara-primary)] grid place-content-center font-semibold">{s.n}</div>
-                <div className="font-semibold text-slate-900">{s.t}</div>
-              </div>
-              <ul className="mt-2 text-sm text-slate-600 space-y-1">
-                {s.bullets.map((b) => <li key={b}>• {b}</li>)}
-              </ul>
-            </div>
-          ))}
+        <div className="mt-6 text-sm text-slate-500">
+          <strong>Coming Soon:</strong> Free trial + affordable monthly plan with advanced insights and recipe packs.
         </div>
       </section>
 
-      <Subscription />
-
-      {/* Contact / Waitlist */}
-      <section id="contact" className="relative bg-[#FFFFFF] px-6 lg:px-12 py-20 bg-gradient-to-l from-[#CCCCFF] to-white">
-        {/* flipped wave */}
-        <div className="absolute top-0 left-0 right-0 -translate-y-full rotate-180">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" className="w-full h-20 sm:h-32 text-[#FFFFFF]" preserveAspectRatio="none">
-            <path fill="currentColor" d="M0,224L48,213.3C96,203,192,181,288,176C384,171,480,181,576,202.7C672,224,768,256,864,256C960,256,1056,224,1152,197.3C1248,171,1344,149,1392,138.7L1440,128L1440,0L0,0Z"/>
-          </svg>
-        </div>
-
+      {/* REPLACE the entire Waitlist section block with this */}
+      <section id="newsletter" className="bg-[#FFFFFF] relative p-[40px] sm:p-[60px] lg:p-[75px] py-8 sm:py-10">
         <div className="text-center mb-10">
           <h2 className="text-2xl sm:text-3xl font-semibold text-slate-900">Join our Waitlist</h2>
           <p className="mt-2 text-slate-600">Stay connected with the latest in hormone-friendly nutrition and app updates.</p>
         </div>
-
-        <div className="flex flex-col-reverse md:flex-row gap-8">
-          {/* left column info cards */}
-          <div className="flex-1 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-            <h3 className="text-lg font-semibold text-slate-900">Get Connected</h3>
-            <div className="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-4">
-              {[
-                { title: "Early Access", desc: "Be first to try new features", icon: "/icons/gift.png" },
-                { title: "Partnership", desc: "Collaborate with Mealistik", icon: "/icons/handshake.png" },
-                { title: "Newsletter", desc: "Monthly insights & recipes", icon: "/icons/newsletter.png" },
-              ].map((card) => (
-                <div key={card.title} className="rounded-xl border border-slate-200 p-4 hover:shadow-sm transition-shadow">
-                  <div className="h-9 w-9 rounded-lg bg-[var(--innara-surface)] grid place-content-center">
-                    <Image src={card.icon} alt={card.title} width={20} height={20} className="object-contain" />
-                  </div>
-                  <div className="mt-2 font-medium text-slate-900">{card.title}</div>
-                  <div className="text-sm text-slate-600">{card.desc}</div>
-                </div>
-              ))}
+        <div className="grid md:grid-cols-2 gap-8">
+          {/* Left Column: Newsletter */}
+          <div className="rounded-2xl border border-[var(--ml-secondary)]/40 bg-white p-6 shadow-sm">
+            <h3 className="text-xl font-semibold">Get the newsletter</h3>
+            <p className="mt-2 text-slate-600">
+              Get hormone-friendly meal tips &amp; recipes delivered monthly.
+            </p>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                const form = e.currentTarget;
+                const email = new FormData(form).get("email");
+                alert(`Thanks! We'll keep you posted at: ${email}`);
+                form.reset();
+              }}
+              className="mt-4 flex flex-col sm:flex-row gap-3"
+            >
+              <input
+                type="email"
+                required
+                name="email"
+                placeholder="you@example.com"
+                className="flex-1 rounded-xl border border-[var(--ml-secondary)]/60 px-4 py-3 outline-none focus:ring-2 focus:ring-[var(--ml-secondary)]"
+              />
+              <button
+                type="submit"
+                className="rounded-xl bg-[var(--ml-primary)] text-white px-5 py-3 font-medium hover:bg-[var(--ml-secondary)] transition"
+              >
+                Subscribe
+              </button>
+            </form>
+            <p className="mt-2 text-xs text-slate-500">No spam. Unsubscribe anytime.</p>
+            {/* Hippo Image at the bottom of the Newsletter Card */}
+            <div className="flex-1 mt-6">
+              <img src="/hippo-peek.png" alt="Mealistik" className="w-20 h-auto rounded-xl ml-[-42]" />
             </div>
           </div>
 
-          {/* Right column: Firebase form */}
-          <div className="flex-1 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-            <h3 className="text-lg font-semibold text-slate-900 mb-3">Join the list</h3>
-
-            <form onSubmit={handleJoinWaitlist} className="space-y-3">
-              <div className="grid sm:grid-cols-2 gap-3">
-                {/* Name (required) */}
-                <input
-                  type="text"
-                  value={wlName}
-                  onChange={(e) => setWlName(e.target.value)}
-                  required
-                  placeholder="Your name"
-                  className="w-full rounded-lg border border-slate-200 px-4 py-2 text-sm 
-                            focus:outline-none focus:ring-2 focus:ring-[var(--innara-primary)]"
-                />
-
-                {/* Email (required) */}
-                <input
-                  type="email"
-                  value={wlEmail}
-                  onChange={(e) => setWlEmail(e.target.value)}
-                  required
-                  placeholder="Email address"
-                  className="w-full rounded-lg border border-slate-200 px-4 py-2 text-sm 
-                            focus:outline-none focus:ring-2 focus:ring-[var(--innara-primary)]"
-                />
-              </div>
-
-              {/* Condition (required) */}
-              <select
-                value={wlCondition}
-                onChange={(e) => setWlCondition(e.target.value)}
+          {/* Right Column: Waitlist */}
+          <div id="waitlist" className="flex-1 rounded-2xl border border-[var(--ml-secondary)]/40 bg-white p-6 shadow-sm">
+            <h3 className="text-xl font-semibold">Join the list</h3>
+            <p className="mt-2 text-slate-600">
+              Be among the first to try Mealistik and help shape the product.
+            </p>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                const form = e.currentTarget;
+                const data = new FormData(form);
+                alert(`You're in, ${data.get("name")}! We’ll reach out at ${data.get("email")}.`);
+                form.reset();
+              }}
+              className="mt-4 grid sm:grid-cols-2 gap-3"
+            >
+              <input
+                type="text"
+                name="name"
                 required
-                className="w-full rounded-lg border border-slate-200 px-4 py-2 text-sm 
-                          focus:outline-none focus:ring-2 focus:ring-[var(--innara-primary)] bg-white"
+                placeholder="Full name"
+                className="rounded-xl border border-[var(--ml-secondary)]/60 px-4 py-3 outline-none focus:ring-2 focus:ring-[var(--ml-secondary)]"
+              />
+              <input
+                type="email"
+                name="email"
+                required
+                placeholder="Email address"
+                className="rounded-xl border border-[var(--ml-secondary)]/60 px-4 py-3 outline-none focus:ring-2 focus:ring-[var(--ml-secondary)]"
+              />
+              <select
+                name="goal"
+                className="sm:col-span-2 rounded-xl border border-[var(--ml-secondary)]/60 px-4 py-3 outline-none focus:ring-2 focus:ring-[var(--ml-secondary)]"
+                defaultValue=""
               >
-                <option value="" disabled>
-                  Select your condition
-                </option>
-                <option value="pcos">PCOS</option>
-                <option value="thyroid">Thyroid</option>
-                <option value="diabetes">Diabetes</option>
-                <option value="other">Other</option>
+                <option value="" disabled>Primary goal (pick one)</option>
+                <option>Hormone balance</option>
+                <option>PCOS support</option>
+                <option>Thyroid support</option>
+                <option>Diabetes support</option>
+                <option>Energy & mood</option>
+                <option>General healthy eating</option>
               </select>
-
-              {/* Submit */}
               <button
                 type="submit"
-                disabled={wlLoading}
-                className="inline-flex items-center justify-center rounded-2xl px-5 py-2.5 text-sm 
-                          font-semibold text-white shadow-sm transition-colors disabled:opacity-70"
-                style={{ backgroundColor: "var(--innara-footer)" }}
+                className="sm:col-span-2 rounded-xl bg-[var(--ml-primary)] text-white px-5 py-3 font-medium hover:bg-[var(--ml-secondary)] transition"
               >
-                {wlLoading ? "Adding…" : "Join Waitlist"}
+                Join the Waitlist
               </button>
-
-              {wlSuccess && (
-                <p className="text-sm mt-2 text-green-600">
-                  🎉 You’re on the list! We’ll keep you posted.
-                </p>
-              )}
-              {wlError && (
-                <p className="text-sm mt-2 text-red-600">
-                  {wlError}
-                </p>
-              )}
             </form>
-          </div>
-        </div>
+            {/* Community Avatars Section with Custom Purple Tint */}
+            <div className="mt-6 flex items-center space-x-4">
+              {/* Avatars */}
+              <div className="flex -space-x-3">
+                {[
+                  "/avatars/avatar-1.jpg",
+                  "/avatars/avatar-2.jpg",
+                  "/avatars/avatar-3.jpg",
+                  "/avatars/avatar-4.jpg",
+                ].map((src, idx) => (
+                  <div key={idx} className="relative w-10 h-10 rounded-full border-2 border-white shadow-sm overflow-hidden">
+                    <img
+                      src={src}
+                      alt="Community member"
+                      className="w-10 h-10 rounded-full object-cover"
+                    />
+                    {/* Purple tint overlay */}
+                    <div
+                      className="absolute inset-0 rounded-full pointer-events-none"
+                      style={{ backgroundColor: "#9999CC", opacity: 0.2 }}
+                    ></div>
+                  </div>
+                ))}
 
-        {/* divider into footer */}
-        <div className="absolute bottom-0 left-0 right-0">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" className="w-full h-20 sm:h-32 text-[#2E1A47]" preserveAspectRatio="none">
-            <path fill="currentColor" d="M0,64L48,80C96,96,192,128,288,149.3C384,171,480,181,576,176C672,171,768,149,864,154.7C960,160,1056,192,1152,213.3C1248,235,1344,245,1392,250.7L1440,256V320H0Z"/>
-          </svg>
+                {/* The "+200" circle */}
+                <div
+                  className="relative w-10 h-10 rounded-full flex items-center justify-center text-xs font-medium border-2 border-white shadow-sm"
+                  style={{ backgroundColor: "var(--ml-accent)", color: "var(--ml-primary)" }}
+                >
+                  +200
+                  <div
+                    className="absolute inset-0 rounded-full pointer-events-none"
+                    style={{ backgroundColor: "#9999CC", opacity: 0.2 }}
+                  ></div>
+                </div>
+              </div>
+
+              {/* Caption */}
+              <p className="text-sm text-slate-600 max-w-xs">
+                Join <strong>200+ women</strong> embracing a hormone-smart approach to food and wellness.
+              </p>
+            </div>
+          </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="bg-[var(--innara-footer)] text-slate-200">
-        <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
+      <footer className="bg-[var(--ml-ink)] text-slate-200">
+        <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-10 sm:py-12">
           <div className="grid md:grid-cols-4 gap-10">
             <div>
-              <div className="text-xl font-bold text-white">Mealistik</div>
+              <a href="/" className="flex items-center gap-2" aria-label="Mealistik home">
+                <Image src="/logo-white.png" alt="Mealistik Logo" width={40} height={40} className="rounded-full"/>
+                <span className="text-xl font-bold text-white">Mealistik</span>
+              </a>
               <p className="mt-3 text-sm text-slate-300">Empowering women to thrive through hormone-smart nutrition.</p>
             </div>
             <div>
               <div className="font-semibold text-white">App</div>
               <ul className="mt-3 space-y-2 text-sm text-slate-300">
-                <li>Features</li>
-                <li>How it Works</li>
-                <li>Pricing</li>
+                <li><a href="#features" className="hover:text-[var(--ml-secondary)] transition">Features</a></li>
+                <li><a href="#how" className="hover:text-[var(--ml-secondary)] transition">How it Works</a></li>
+                <li><a href="#plans" className="hover:text-[var(--ml-secondary)] transition">Pricing</a></li>
               </ul>
             </div>
             <div>
               <div className="font-semibold text-white">Company</div>
               <ul className="mt-3 space-y-2 text-sm text-slate-300">
-                <li>About</li>
-                <li>Founders</li>
-                <li>Contact</li>
+                <li><a href="#why" className="hover:text-[var(--ml-secondary)] transition">About</a></li>
+                <li><a href="#newsletter" className="hover:text-[var(--ml-secondary)] transition">Contact</a></li>
+              </ul>
+            </div>
+            <div>
+              <div className="font-semibold text-white">Resources</div>
+              <ul className="mt-3 space-y-2 text-sm text-slate-300">
+                <li><a href="/privacy-policy" className="hover:text-[var(--ml-secondary)] transition">Privacy Policy</a></li>
+                <li><a href="/terms-and-conditions" className="hover:text-[var(--ml-secondary)] transition">Terms and Conditions</a></li>
               </ul>
             </div>
           </div>
@@ -646,9 +767,9 @@ export default function Home() {
 
             <div className="flex items-center gap-3">
               {[
-                { name: "Instagram", icon: "/icons/instagram.png", link: "https://www.instagram.com/innara.ai/" },
+                { name: "Instagram", icon: "/icons/instagram.png", link: "https://www.instagram.com/mealistik/" },
                 { name: "Medium", icon: "/icons/medium.png", link: "https://medium.com/@innara.general" },
-                { name: "LinkedIn", icon: "/icons/linkedin.png", link: "https://www.linkedin.com/company/innara-ai/" },
+                { name: "LinkedIn", icon: "/icons/linkedin.png", link: "https://www.linkedin.com/company/mealistik/" },
               ].map((social) => (
                 <a key={social.name} href={social.link} target="_blank" rel="noopener noreferrer" className="h-8 w-8 grid place-content-center rounded-full bg-[#1B0F2B] hover:bg-[#2C1B45] transition-colors">
                   <Image src={social.icon} alt={social.name} width={20} height={20} className="object-contain" />
@@ -658,86 +779,205 @@ export default function Home() {
           </div>
         </div>
       </footer>
+    </main>
+  );
+}
 
-      {/* Hippo Chat Trigger */}
-      <div className="fixed bottom-6 right-6 z-50">
-        {!hippoOpen && (
-          <Button
-            onClick={() => setHippoOpen(true)}
-            className="h-14 w-14 rounded-full bg-[var(--innara-primary)] shadow-lg hover:opacity-95"
-            size="icon"
-          >
-            <MessageCircle className="h-6 w-6 text-white" />
-            <Sparkles className="h-4 w-4 text-[var(--innara-primary)] absolute -top-1 -right-1" />
-          </Button>
-        )}
-      </div>
+/* ------------- Small Presentational Components ------------- */
 
-      {/* Hippo Window */}
-      {hippoOpen && (
-        <div className="fixed bottom-6 right-6 z-50 w-96 max-w-[calc(100vw-2rem)]">
-          <div className="bg-[var(--innara-surface)] rounded-2xl shadow-2xl border border-[var(--innara-footer)]/10 overflow-hidden">
-            {/* header */}
-            <div className="bg-[var(--innara-primary)] text-white p-4 flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="h-10 w-10 rounded-full bg-white/20 flex items-center justify-center">
-                  <Image src="/icons/hippo-mascot.png" alt="Hippo" width={30} height={30} />
-                </div>
-                <div>
-                  <h3 className="font-semibold text-sm">Hippo</h3>
-                  <p className="text-xs opacity-90">Practical, cycle-aware meal plans</p>
-                </div>
-              </div>
-              <Button onClick={() => setHippoOpen(false)} variant="ghost" size="icon" className="h-8 w-8 text-white hover:bg-white/20">
-                <X className="h-4 w-4" />
-              </Button>
-            </div>
+function Dot({ className = "" }) {
+  return <span className={`inline-block h-2 w-2 rounded-full ${className}`} />;
+}
 
-            {/* messages */}
-            <div className="h-80 overflow-y-auto p-4 space-y-3">
-              {hippoMessages.map(m => (
-                <div key={m.id} className={`flex ${m.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
-                  <div className={`max-w-[80%] rounded-2xl px-4 py-2 text-sm ${m.sender === 'user' ? 'bg-[var(--innara-primary)] text-white' : 'bg-white text-[var(--innara-footer)] border border-[var(--innara-footer)]/10'}`}>
-                    {m.text}
-                  </div>
-                </div>
-              ))}
-
-              {hippoTyping && (
-                <div className="flex justify-start">
-                  <div className="bg-white text-[var(--innara-footer)] rounded-2xl px-4 py-2 text-sm border border-[var(--innara-footer)]/10">
-                    <div className="flex space-x-1">
-                      <div className="h-2 w-2 bg-[var(--innara-primary)] rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                      <div className="h-2 w-2 bg-[var(--innara-primary)] rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                      <div className="h-2 w-2 bg-[var(--innara-primary)] rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              <div ref={hippoEndRef} />
-            </div>
-
-            {/* input */}
-            <div className="p-4 border-t border-[var(--innara-footer)]/10 bg-[var(--innara-surface)]">
-              <div className="flex gap-2">
-                <Input
-                  value={hippoInput}
-                  onChange={(e) => setHippoInput(e.target.value)}
-                  onKeyDown={handleHippoKey}
-                  placeholder="Ask Hippo about meal planning..."
-                  className="flex-1 rounded-full bg-white border-[var(--innara-footer)]/10"
-                />
-                <Button onClick={handleHippoSend} size="icon" disabled={!hippoInput.trim() || hippoTyping} className="bg-[var(--innara-primary)] text-white rounded-full">
-                  <Send className="h-4 w-4" />
-                </Button>
-              </div>
-              <p className="text-xs text-[var(--innara-footer)]/70 mt-2 text-center">Powered by AI — Hippo helps, not diagnoses.</p>
-            </div>
-          </div>
+// REPLACE existing FeatureCard with this
+function FeatureCard({ icon, title, text }) {
+  return (
+    <div className="group glow-card rounded-2xl border border-[var(--ml-secondary)]/40 bg-white p-6 shadow-sm hover:-translate-y-0.5 hover:shadow-md transition">
+      <div className="flex items-center gap-3">
+        <div className="h-10 w-10 rounded-xl bg-[var(--ml-accent)]/40 text-[var(--ml-primary)] grid place-items-center group-hover:scale-105 transition">
+          {icon}
         </div>
+        <h4 className="font-semibold">{title}</h4>
+      </div>
+      <p className="mt-2 text-slate-600 text-sm">{text}</p>
+    </div>
+  );
+}
+
+function PlanTeaser({ name, note, bullets, highlight = false }) {
+  return (
+    <div
+      className={`group glow-card relative rounded-2xl p-6 border ${
+        highlight
+          ? "border-[var(--ml-secondary)]/40 bg-[var(--ml-accent)]/90"
+          : "border-[var(--ml-secondary)]/40 bg-white"
+      }`}
+    >
+      {highlight && (
+        <span className="absolute -top-3 right-4 text-xs px-2 py-1 rounded-full bg-[var(--ml-primary)] text-white shadow-sm">
+          ⭐ Most Popular
+        </span>
       )}
 
+      <div className="flex items-center justify-between">
+        <h4 className="font-semibold">{name}</h4>
+        <span
+          className={`text-xs px-2 py-1 rounded-full ${
+            highlight ? "bg-[var(--ml-white)] text-[var(--ml-primary)]" : "bg-[var(--ml-accent)] text-[var(--ml-primary)]"
+          }`}
+        >
+          {note}
+        </span>
+      </div>
+
+      <ul className="mt-4 space-y-2 text-sm text-slate-700">
+        {bullets.map((b, i) => (
+          <li key={i} className="flex gap-2">
+            <CheckIcon className="h-4 w-4 mt-0.5 shrink-0" />
+            <span>{b}</span>
+          </li>
+        ))}
+      </ul>
+
+      <div className="mt-5">
+        <a
+          href="#waitlist"
+          className={`w-full inline-flex items-center justify-center rounded-xl px-4 py-2 text-sm font-medium transition ${
+            highlight
+              ? "bg-[var(--ml-primary)] text-white hover:bg-[var(--ml-ink)]/90"
+              : "border border-[var(--ml-secondary)] hover:bg-[var(--ml-accent)]/30"
+          }`}
+        >
+          Coming Soon – Notify Me
+        </a>
+      </div>
     </div>
+  );
+}
+
+
+function SocialIcon({ children, href, label }) {
+  return (
+    <a
+      href={href}
+      aria-label={label}
+      target="_blank"
+      rel="noreferrer"
+      className="inline-flex items-center gap-2 rounded-full border border-[var(--ml-secondary)] px-3 py-2 text-sm hover:bg-[var(--ml-accent)]/30 transition"
+    >
+      {children}
+      <span className="hidden sm:inline">{label}</span>
+    </a>
+  );
+}
+
+/* ------------- Inline SVG Icons ------------- */
+
+function HippoMark({ className = "" }) {
+  return (
+    <svg viewBox="0 0 64 64" className={className} xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M10 28c0-9 8-18 22-18s22 9 22 18-6 16-22 16S10 37 10 28z" fill="#3e3e7a" opacity="0.25" />
+      <circle cx="26" cy="28" r="3" fill="#0f172a" />
+      <circle cx="38" cy="28" r="3" fill="#0f172a" />
+      <rect x="28" y="36" width="8" height="4" rx="2" fill="#0f172a" />
+    </svg>
+  );
+}
+function Sparkles(props) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" {...props} aria-hidden="true">
+      <path d="M9 5l1.2 2.8L13 9l-2.8 1.2L9 13l-1.2-2.8L5 9l2.8-1.2L9 5zm8 2l.8 1.8L20 10l-2.2.9L17 13l-.8-1.9L14 10l2.2-.9L17 7zm-3 6l1 2.3 2.3 1-2.3 1L14 20l-1-2.7-2.3-1 2.3-1 1-2.3z" />
+    </svg>
+  );
+}
+function PlayIcon(props) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" {...props} aria-hidden="true">
+      <path d="M8 5v14l11-7L8 5z" />
+    </svg>
+  );
+}
+function ProfileIcon(props) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" {...props} aria-hidden="true">
+      <path d="M12 12a5 5 0 100-10 5 5 0 000 10zm-9 9a9 9 0 1118 0H3z" />
+    </svg>
+  );
+}
+function CalendarIcon(props) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" {...props} aria-hidden="true">
+      <path d="M7 2h2v2h6V2h2v2h3a2 2 0 012 2v3H2V6a2 2 0 012-2h3V2zm15 8v8a2 2 0 01-2 2H4a2 2 0 01-2-2v-8h20z" />
+    </svg>
+  );
+}
+function PulseIcon(props) {
+  return (
+    <svg viewBox="0 0 24 24" {...props} aria-hidden="true">
+      <path d="M3 12h4l2-5 4 10 2-5h6" stroke="currentColor" strokeWidth="2" fill="none" />
+    </svg>
+  );
+}
+function ChecklistIcon(props) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" {...props} aria-hidden="true">
+      <path d="M3 5h14v2H3V5zm0 6h14v2H3v-2zm0 6h14v2H3v-2zM20.3 6.7l-3 3-1.4-1.4 1.6-1.6 1.4-1.4 1.4 1.4z" />
+    </svg>
+  );
+}
+function BasketIcon(props) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" {...props} aria-hidden="true">
+      <path d="M7 10l5-8 5 8h4l-2 10a2 2 0 01-2 2H7a2 2 0 01-2-2L3 10h4zm5-5l3 5H9l3-5z" />
+    </svg>
+  );
+}
+function ChatIcon(props) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" {...props} aria-hidden="true">
+      <path d="M4 4h16v10a2 2 0 01-2 2H8l-4 4V6a2 2 0 012-2z" />
+    </svg>
+  );
+}
+function GlobeIcon(props) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" {...props} aria-hidden="true">
+      <path d="M12 2a10 10 0 100 20 10 10 0 000-20zm2.5 17.3c.9-1.5 1.5-3.6 1.6-5.8h3.2a8.1 8.1 0 01-4.8 5.8zM4.7 13.5h3.2c.1 2.2.7 4.3 1.6 5.8a8.1 8.1 0 01-4.8-5.8zM8 11H4.7a8.1 8.1 0 014.8-5.8C8.4 6.7 8 8.8 8 11zm3 0c0-2.5.6-4.8 1.6-6.3 1 1.5 1.6 3.8 1.6 6.3s-.6 4.8-1.6 6.3C11.6 15.8 11 13.5 11 11zm6.3 0c0-2.2-.4-4.3-1.5-5.8a8.1 8.1 0 014.8 5.8H17.3z" />
+    </svg>
+  );
+}
+function ShieldIcon(props) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" {...props} aria-hidden="true">
+      <path d="M12 2l8 4v6c0 5-3.4 9.4-8 10-4.6-.6-8-5-8-10V6l8-4z" />
+    </svg>
+  );
+}
+function CheckIcon(props) {
+  return (
+    <svg viewBox="0 0 20 20" fill="currentColor" {...props} aria-hidden="true">
+      <path fillRule="evenodd" d="M16.7 5.3a1 1 0 010 1.4l-8 8a1 1 0 01-1.4 0L3.3 11.7a1 1 0 011.4-1.4l3 3 7.3-7.3a1 1 0 011.4 0z" clipRule="evenodd" />
+    </svg>
+  );
+}
+function InstagramIcon(props) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" {...props} aria-hidden="true">
+      <path d="M7 2h10a5 5 0 015 5v10a5 5 0 01-5 5H7a5 5 0 01-5-5V7a5 5 0 015-5zm0 2a3 3 0 00-3 3v10a3 3 0 003 3h10a3 3 0 003-3V7a3 3 0 00-3-3H7zm5 3a5 5 0 110 10 5 5 0 010-10zm6.5-.8a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z" />
+    </svg>
+  );
+}
+function MediumIcon(props) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" {...props} aria-hidden="true">
+      <path d="M4 7.5A2.5 2.5 0 016.5 5h11A2.5 2.5 0 0120 7.5v9A2.5 2.5 0 0117.5 19h-11A2.5 2.5 0 014 16.5v-9zM8 9v6l4-3-4-3zm8 0h-2v6h2V9z" />
+    </svg>
+  );
+}
+function LinkedInIcon(props) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" {...props} aria-hidden="true">
+      <path d="M4 3a2 2 0 100 4 2 2 0 000-4zM3 8h3v13H3V8zm7 0h3v2h.1c.4-.7 1.4-1.6 2.9-1.6 3.1 0 3.7 2 3.7 4.6V21h-3v-6.1c0-1.5 0-3.4-2.1-3.4s-2.4 1.6-2.4 3.3V21h-3V8z" />
+    </svg>
   );
 }
