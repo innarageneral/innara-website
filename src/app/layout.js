@@ -21,7 +21,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" data-scroll-behavior="smooth" className="scroll-smooth">
       <head>
-        <link rel="icon" href="/favicon.svg"/>
+        <link rel="icon" href="/favicon.png"/>
         <script src="https://getlaunchlist.com/js/widget.js" defer></script>
       </head>
       <body
