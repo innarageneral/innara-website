@@ -626,17 +626,16 @@ export default function Home() {
             <div>
               <div className="font-semibold text-white">App</div>
               <ul className="mt-3 space-y-2 text-sm text-slate-300">
-                <li>Features</li>
-                <li>How it Works</li>
-                <li>Pricing</li>
+                <li><a href="#features" className="hover:text-[var(--ml-secondary)] transition">Features</a></li>
+                <li><a href="#how" className="hover:text-[var(--ml-secondary)] transition">How it Works</a></li>
+                <li><a href="#plans" className="hover:text-[var(--ml-secondary)] transition">Pricing</a></li>
               </ul>
             </div>
             <div>
               <div className="font-semibold text-white">Company</div>
               <ul className="mt-3 space-y-2 text-sm text-slate-300">
-                <li>About</li>
-                <li>Founders</li>
-                <li>Contact</li>
+                <li><a href="#why" className="hover:text-[var(--ml-secondary)] transition">About</a></li>
+                <li><a href="#newsletter" className="hover:text-[var(--ml-secondary)] transition">Contact</a></li>
               </ul>
             </div>
           </div>
