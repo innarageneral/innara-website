@@ -2,6 +2,7 @@
 
 import { motion, useScroll } from "framer-motion";
 import Image from "next/image";
+import Link from "next/link";
 import { useState, useCallback } from "react";
 import React, { useRef, useEffect } from "react";
 import { Check } from "lucide-react";
@@ -201,9 +202,9 @@ export default function Home() {
       <header className="sticky top-0 z-30 bg-white/90 backdrop-blur border-b border-slate-100">
         <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
-            <a href="/" className="flex items-center gap-2" aria-label="Mealistik home">
+            <Link href="/" className="flex items-center gap-2" aria-label="Mealistik home">
               <Image src="/word-logo.png" alt="Mealistik Logo" width={150} height={40} className="rounded-full"/>
-            </a>
+            </Link>
             <nav
               className="hidden md:flex items-center gap-6 text-sm text-slate-700 animate-fade-up"
               style={{ animationDelay: "120ms" }}
@@ -786,10 +787,10 @@ export default function Home() {
         <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
           <div className="grid md:grid-cols-4 gap-10">
             <div>
-              <a href="/" className="flex items-center gap-2" aria-label="Mealistik home">
+              <Link href="/" className="flex items-center gap-2" aria-label="Mealistik home">
                 <Image src="/logo-white.png" alt="Mealistik Logo" width={40} height={40} className="rounded-full"/>
                 <span className="text-xl font-bold text-white">Mealistik</span>
-              </a>
+              </Link>
               <p className="mt-3 text-sm text-slate-300">Empowering women to thrive through hormone-smart nutrition.</p>
             </div>
             <div>
@@ -804,7 +805,7 @@ export default function Home() {
               <div className="font-semibold text-white">Company</div>
               <ul className="mt-3 space-y-2 text-sm text-slate-300">
                 <li><a href="#about" className="hover:text-[var(--innara-surface)] transition">About</a></li>
-                <li><a href="/contact" className="hover:text-[var(--innara-surface)] transition">Contact</a></li>
+                <li><Link href="/contact" className="hover:text-[var(--innara-surface)] transition">Contact</Link></li>
               </ul>
             </div>
           </div>
