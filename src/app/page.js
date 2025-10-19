@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useState, useCallback } from "react";
 import React, { useRef, useEffect } from "react";
 import { Send, MessageCircle, X } from "lucide-react";
-import { Input } from "../components/ui/Input";
+import { Input } from "../components/ui/Input.jsx";
 import { Heart, Sparkles, Crown, Check } from "lucide-react";
 import { Button } from "../components/ui/Button.jsx";
 
@@ -449,7 +449,7 @@ export default function Home() {
                 "Ask questions about meals & nutrients anytime",
                 "Get body-synced advice instantly",
                 "Receive reminders tailored to your goals",
-                "Even ask “Can I eat KFC or Maccas today?”—our Hippooo will make it work for you",
+                "Even ask “Can I eat KFC or Maccas today?” our Hippooo will make it work for you",
               ],
             },
           ].map((f, i) => (
