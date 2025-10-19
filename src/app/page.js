@@ -4,10 +4,7 @@ import { motion, useScroll } from "framer-motion";
 import Image from "next/image";
 import { useState, useCallback } from "react";
 import React, { useRef, useEffect } from "react";
-import { Send, MessageCircle, X } from "lucide-react";
-import { Input } from "../components/ui/Input.jsx";
-import { Heart, Sparkles, Crown, Check } from "lucide-react";
-import { Button } from "../components/ui/Button.jsx";
+import { Check } from "lucide-react";
 
 // 🔹 Firebase (Firestore)
 import { db } from "../lib/firebase"; // path: src/lib/firebase.js
@@ -601,7 +598,7 @@ export default function Home() {
               </ul>
 
               {/* CTA Button */}
-              <Button
+              <button
                 className={`w-full rounded-full ${
                   selectedPlan === "free"
                     ? "bg-[var(--innara-primary)]/90 text-[#FFFFFF] hover:bg-[var(--innara-footer)]/40"
@@ -609,7 +606,7 @@ export default function Home() {
                 }`}
               >
                 {freePlan.popular ? "Get Started" : "Choose Plan"}
-              </Button>
+              </button>
             </div>
 
             {/* Premium Plan Card */}
@@ -656,7 +653,7 @@ export default function Home() {
               </ul>
 
               {/* CTA Button */}
-              <Button
+              <button
                 className={`w-full rounded-full ${
                   selectedPlan === "premium"
                     ? "bg-[var(--innara-primary)] hover:opacity-90 text-white"
@@ -664,7 +661,7 @@ export default function Home() {
                 }`}
               >
                 {premiumPlan.popular ? "Get Started" : "Choose Plan"}
-              </Button>
+              </button>
             </div>
           </div>
         </div>
@@ -829,86 +826,6 @@ export default function Home() {
           </div>
         </div>
       </footer>
-
-      {/* Hippo Chat Trigger */}
-      <div className="fixed bottom-6 right-6 z-50">
-        {!hippoOpen && (
-          <Button
-            onClick={() => setHippoOpen(true)}
-            className="h-14 w-14 rounded-full bg-[var(--innara-primary)] shadow-lg hover:opacity-95"
-            size="icon"
-          >
-            <MessageCircle className="h-6 w-6 text-white" />
-            <Sparkles className="h-4 w-4 text-[var(--innara-primary)] absolute -top-1 -right-1" />
-          </Button>
-        )}
-      </div>
-
-      {/* Hippo Window */}
-      {hippoOpen && (
-        <div className="fixed bottom-6 right-6 z-50 w-96 max-w-[calc(100vw-2rem)]">
-          <div className="bg-[var(--innara-surface)] rounded-2xl shadow-2xl border border-[var(--innara-footer)]/10 overflow-hidden">
-            {/* header */}
-            <div className="bg-[var(--innara-primary)] text-white p-4 flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="h-10 w-10 rounded-full bg-white/20 flex items-center justify-center">
-                  <Image src="/icons/hippo-mascot.png" alt="Hippo" width={30} height={30} />
-                </div>
-                <div>
-                  <h3 className="font-semibold text-sm">Hippo</h3>
-                  <p className="text-xs opacity-90">Practical, cycle-aware meal plans</p>
-                </div>
-              </div>
-              <Button onClick={() => setHippoOpen(false)} variant="ghost" size="icon" className="h-8 w-8 text-white hover:bg-white/20">
-                <X className="h-4 w-4" />
-              </Button>
-            </div>
-
-            {/* messages */}
-            <div className="h-80 overflow-y-auto p-4 space-y-3">
-              {hippoMessages.map(m => (
-                <div key={m.id} className={`flex ${m.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
-                  <div className={`max-w-[80%] rounded-2xl px-4 py-2 text-sm ${m.sender === 'user' ? 'bg-[var(--innara-primary)] text-white' : 'bg-white text-[var(--innara-footer)] border border-[var(--innara-footer)]/10'}`}>
-                    {m.text}
-                  </div>
-                </div>
-              ))}
-
-              {hippoTyping && (
-                <div className="flex justify-start">
-                  <div className="bg-white text-[var(--innara-footer)] rounded-2xl px-4 py-2 text-sm border border-[var(--innara-footer)]/10">
-                    <div className="flex space-x-1">
-                      <div className="h-2 w-2 bg-[var(--innara-primary)] rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                      <div className="h-2 w-2 bg-[var(--innara-primary)] rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                      <div className="h-2 w-2 bg-[var(--innara-primary)] rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              <div ref={hippoEndRef} />
-            </div>
-
-            {/* input */}
-            <div className="p-4 border-t border-[var(--innara-footer)]/10 bg-[var(--innara-surface)]">
-              <div className="flex gap-2">
-                <Input
-                  value={hippoInput}
-                  onChange={(e) => setHippoInput(e.target.value)}
-                  onKeyDown={handleHippoKey}
-                  placeholder="Ask Hippo about meal planning..."
-                  className="flex-1 rounded-full bg-white border-[var(--innara-footer)]/10"
-                />
-                <Button onClick={handleHippoSend} size="icon" disabled={!hippoInput.trim() || hippoTyping} className="bg-[var(--innara-primary)] text-white rounded-full">
-                  <Send className="h-4 w-4" />
-                </Button>
-              </div>
-              <p className="text-xs text-[var(--innara-footer)]/70 mt-2 text-center">Powered by AI — Hippo helps, not diagnoses.</p>
-            </div>
-          </div>
-        </div>
-      )}
-
     </div>
   );
 }
