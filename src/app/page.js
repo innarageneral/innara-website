@@ -5,9 +5,9 @@ import Image from "next/image";
 import { useState, useCallback } from "react";
 import React, { useRef, useEffect } from "react";
 import { Send, MessageCircle, X } from "lucide-react";
-import { Input } from "@/components/ui/input";
+import { Input } from "../components/ui/Input";
 import { Heart, Sparkles, Crown, Check } from "lucide-react";
-import { Button } from "@/components/ui/button"; 
+import { Button } from "../components/ui/Button.jsx";
 
 // 🔹 Firebase (Firestore)
 import { db } from "../lib/firebase"; // path: src/lib/firebase.js

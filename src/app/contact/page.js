@@ -58,6 +58,27 @@ export default function ContactPage() {
               <a href="mailto:hello@innara.com"><b>hello@innara.com</b></a>
             </p>
           </div>
+
+          <div className="contact-card">
+            <p><strong>Founder</strong></p>
+            <p>Sneha Sivakumar</p>
+            <p>
+              LinkedIn:{" "}
+              <a
+                href="https://www.linkedin.com/in/snehas1632"
+                target="_blank"
+                rel="noopener noreferrer"
+              > 
+                <b>
+                  sneha-sivakumar
+                </b>
+              </a>
+            </p>
+            <p>
+              Contact number: {" "}
+              <a href="tel:+919876543210"><b>+91 9876543210</b></a>
+            </p>
+          </div>
         </section>
       </div>
     </main>
