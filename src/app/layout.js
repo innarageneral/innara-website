@@ -23,6 +23,11 @@ export default function RootLayout({ children }) {
       <head>
         <link rel="icon" href="/favicon.png"/>
         <script src="https://getlaunchlist.com/js/widget.js" defer></script>
+        <script async src="https://plausible.io/js/pa-A556PzG0MyFcjDUm6Sxm6.js"></script>
+        <script>
+          window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+          plausible.init()
+        </script>
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased max-w-full overflow-x-hidden font-sans text-slate-800 bg-white`}
