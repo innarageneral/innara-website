@@ -217,15 +217,6 @@ export default function Home() {
             <div className="flex items-center gap-3">
               <button
                 type="button"
-                onClick={() => window.open("https://mealistik.lovable.app/", "_blank")}
-                className="relative z-50 inline-flex items-center justify-center rounded-2xl border border-[var(--innara-primary)]
-                          px-5 py-3 text-sm font-semibold text-[var(--innara-primary)] transition-all duration-200
-                          hover:bg-[var(--innara-secondary)] hover:text-[var(--innara-footer)] hover:border-[var(--innara-footer)]"
-              >
-                Try Demo <span className="ml-2">➜</span>
-              </button>
-              <button
-                type="button"
                 onClick={() => scrollToSection("contact")}
                 className="inline-flex items-center justify-center rounded-2xl px-5 py-3 text-sm font-semibold text-white shadow-sm transition-colors
                            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--innara-primary)]/40
@@ -275,14 +266,6 @@ export default function Home() {
                 style={{ backgroundColor: "var(--innara-footer)" }}
               >
                 Join our Waitlist
-              </button>
-              <button
-                onClick={() => window.open("https://mealistik.lovable.app/", "_blank")}
-                className="relative z-50 inline-flex items-center justify-center rounded-2xl border border-[var(--innara-primary)]
-                           px-5 py-3 text-sm font-semibold text-[var(--innara-primary)] transition-all duration-200
-                           hover:bg-[var(--innara-secondary)] hover:text-[var(--innara-footer)] hover:border-[var(--innara-footer)]"
-              >
-                See How it Works <span className="ml-2">➜</span>
               </button>
             </div>
           </div>
