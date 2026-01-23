@@ -213,17 +213,14 @@ export default function Home() {
               <a className="hover:text-[var(--innara-primary)] link-underline" href="#features">Features</a>
               <a className="hover:text-[var(--innara-primary)] link-underline" href="#plans">Plans</a>
               <a className="hover:text-[var(--innara-primary)] link-underline" href="#contact">Contact</a>
+              <Link
+                href="/founder"
+                className="hover:text-[var(--innara-primary)] link-underline"
+              >
+                Founder
+              </Link>
             </nav>
             <div className="flex items-center gap-3">
-              <button
-                type="button"
-                onClick={() => window.open("https://mealistik.lovable.app/", "_blank")}
-                className="relative z-50 inline-flex items-center justify-center rounded-2xl border border-[var(--innara-primary)]
-                          px-5 py-3 text-sm font-semibold text-[var(--innara-primary)] transition-all duration-200
-                          hover:bg-[var(--innara-secondary)] hover:text-[var(--innara-footer)] hover:border-[var(--innara-footer)]"
-              >
-                Try Demo <span className="ml-2">➜</span>
-              </button>
               <button
                 type="button"
                 onClick={() => scrollToSection("contact")}
@@ -275,14 +272,6 @@ export default function Home() {
                 style={{ backgroundColor: "var(--innara-footer)" }}
               >
                 Join our Waitlist
-              </button>
-              <button
-                onClick={() => window.open("https://mealistik.lovable.app/", "_blank")}
-                className="relative z-50 inline-flex items-center justify-center rounded-2xl border border-[var(--innara-primary)]
-                           px-5 py-3 text-sm font-semibold text-[var(--innara-primary)] transition-all duration-200
-                           hover:bg-[var(--innara-secondary)] hover:text-[var(--innara-footer)] hover:border-[var(--innara-footer)]"
-              >
-                See How it Works <span className="ml-2">➜</span>
               </button>
             </div>
           </div>
