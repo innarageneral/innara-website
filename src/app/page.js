@@ -213,6 +213,12 @@ export default function Home() {
               <a className="hover:text-[var(--innara-primary)] link-underline" href="#features">Features</a>
               <a className="hover:text-[var(--innara-primary)] link-underline" href="#plans">Plans</a>
               <a className="hover:text-[var(--innara-primary)] link-underline" href="#contact">Contact</a>
+              <Link
+                href="/founder"
+                className="hover:text-[var(--innara-primary)] link-underline"
+              >
+                Founder
+              </Link>
             </nav>
             <div className="flex items-center gap-3">
               <button
